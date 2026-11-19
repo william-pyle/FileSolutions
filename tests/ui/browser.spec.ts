@@ -55,8 +55,8 @@ test('all view modes persist and preserve attached icon status and selection',as
  }
 });
 test('column chooser resolves inherited and multiple assignments and persists widths',async({page})=>{
- await browser(page);await page.evaluate(()=>{const c=(window as any).__browserConfig;c.destinations=[{id:'a',name:'Archive A',path:'D:\\A'},{id:'b',name:'Archive B',path:'E:\\B'}];c.roots=[{id:'a',path:'C:\\Fixture\\Photos\\A',enabled:true},{id:'b',path:'C:\\Fixture\\Photos\\B',enabled:true}];c.assignments={a:'a',b:'b'};});
- await page.locator('th').first().click({button:'right'});await page.getByRole('menuitemcheckbox',{name:'Backup folder',exact:true}).click();await expect(page.locator('[data-entry]').first().locator('.cell-destination')).toContainText('Multiple locations: Archive A (D:\\A); Archive B (E:\\B)');
+ await browser(page);await page.evaluate(()=>{const c=(window as any).__browserConfig;c.destinations=[{id:'a',name:'Archive A',path:'D:\\FixtureArchiveA'},{id:'b',name:'Archive B',path:'E:\\B'}];c.roots=[{id:'a',path:'C:\\Fixture\\Photos\\A',enabled:true},{id:'b',path:'C:\\Fixture\\Photos\\B',enabled:true}];c.assignments={a:'a',b:'b'};});
+ await page.locator('th').first().click({button:'right'});await page.getByRole('menuitemcheckbox',{name:'Backup folder',exact:true}).click();await expect(page.locator('[data-entry]').first().locator('.cell-destination')).toContainText('Multiple locations: Archive A (D:\\FixtureArchiveA); Archive B (E:\\B)');
  const resize=page.getByRole('separator',{name:'Resize Backup folder column',exact:true});await resize.focus();await page.keyboard.press('ArrowRight');expect(await page.evaluate(()=>(window as any).__calls.filter((c:any)=>c.action==='saveBrowserState').at(-1).payload.preferences.widths.destination)).toBe(250);
 });
 test('double click opens folders and caption tabs remain interactive',async({page})=>{
