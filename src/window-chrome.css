@@ -1,0 +1,19 @@
+/* ContactSolutions src/chrome.rs: TITLE_BAR=48, caption widths=42, mark=24.
+   Caption hover/focus and pressed states deliberately share the donor's wash. */
+.window-title{height:48px;min-height:48px;display:flex;align-items:center;padding:0 0 0 8px;position:relative;border:0;background:var(--fs-title-bar);color:var(--fs-text);user-select:none}
+.window-title::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--fs-border);opacity:.6;pointer-events:none}
+.window-title button{display:flex;align-items:center;justify-content:center;flex:none;border:0;border-radius:0;padding:0;gap:0;min-height:0;background:transparent;color:var(--fs-text);filter:none;transition:none;box-shadow:none;cursor:default}
+.window-title .window-icon{width:32px;min-width:32px;height:32px;outline-offset:-1px}
+.window-title .window-icon .mark{width:24px;height:24px}
+.window-title .window-icon:hover,.window-title .window-icon:active{background:transparent}
+.window-title .window-drag{flex:1;align-self:stretch;display:flex;align-items:center;padding-left:10px;font-size:13px;font-weight:600;min-width:0}
+.caption-controls{height:48px;display:flex;flex:none}
+.window-title .caption-controls button{width:42px;min-width:42px;height:48px}
+.window-title .caption-controls button:hover,.window-title .caption-controls button:focus,.window-title .caption-controls button:active{background:var(--fs-hover)}
+.window-title .caption-controls .window-close:hover,.window-title .caption-controls .window-close:focus,.window-title .caption-controls .window-close:active{background:var(--fs-close-hover);color:#fff}
+.window-title button:focus-visible{outline:1px solid var(--fs-accent);outline-offset:-3px}
+.window-title{app-region:drag}
+.window-title button{app-region:no-drag}
+.caption-glyph{display:block;width:14px;height:14px;overflow:visible;flex:none;pointer-events:none;stroke-linecap:butt;stroke-linejoin:miter}
+html[data-native-frame=true] .window-title{display:none}
+html[data-native-frame=true] .app-layout{height:100vh}

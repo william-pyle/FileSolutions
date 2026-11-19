@@ -1,54 +1,48 @@
-# OmniSync
+# FileSolutions
 
-One-way Windows backups to a folder you choose: a local disk, Google Drive for desktop, another synced folder, a mapped drive or a network share. Source files stay where they are. Precise exclusions, retained versions, verified restores, tray controls and Explorer integration are included.
+File browser and one-way backups for Windows 11 x64. Version 0.3.0 introduces the FileSolutions identity and Explorer-style interface. Release publication and installation are separate: get published binaries from GitHub Releases. The retained 0.2.0 release is historical OmniSync software.
 
-**[Download the latest Windows x64 release](https://github.com/william-pyle/OmniSync/releases/latest)**
+The owner approved the Explorer visual direction. The current source has been built and exercised in isolated native fixtures; see `docs/explorer-verification.json` for exact binaries, checks, failures and remaining gaps. That isolated evidence does not establish installer acceptance. Release CI builds the current installer; earlier local packages remain historical.
 
-Version 0.2 replaces the direct Google Drive API with ordinary filesystem copies. No Google Cloud project, OAuth client or provider credentials are required.
+## Transition from OmniSync 0.2.0
 
-## Upgrade without losing your selections
+Download `FileSolutions-Setup-0.3.0-x64.exe` and its `.sha256` file manually from the [0.3.0 release](https://github.com/william-pyle/FileSolutions/releases/tag/v0.3.0). Verify the SHA-256 before choosing to run setup. OmniSync 0.2.0 expects `OmniSync-Setup-*` assets and cannot automatically consume the new FileSolutions assets; this release does not provide an automatic migration.
 
-1. Quit the old OmniSync from its tray menu and run the new installer. Do not uninstall or delete app data first.
-2. Open OmniSync from the Start menu. Existing sources, exclusion rules, device identity and preferences remain saved.
-3. Choose **Overview → Choose destination** (or Settings). Browse to a folder or enter an absolute path. Local, mapped and UNC paths are accepted.
-4. Review and apply. All included source files are copied to this destination. If previously paused, select Resume.
+FileSolutions installs separately under `%ProgramFiles%\FileSolutions\0.3.0` and starts a fresh `%LOCALAPPDATA%\app.filesolutions.desktop` profile. Reconfigure destinations and sources deliberately. Existing OmniSync installation, profile, selections, backups, shortcuts and pinned entries are not migrated or removed. Retain the old application and data for access to its backup history; any later uninstall is the owner's separate choice. FileSolutions creates its own Start menu shortcut; existing pins are not retargeted.
 
-Existing Google backups remain untouched; their local records are archived during migration. The new app copies from the selected source files, not from old Google copies. Switching destinations keeps your selections and old backups, then starts a fresh verified backup at the selected location. Nothing moves or deletes the original source files.
+The installer is unsigned and requires administrator approval. Interactive setup presents Explorer integration choices; unattended installation and clean-VM upgrade/uninstall paths have not been accepted. Downloading or publishing does not install, register shell integration, restart Explorer, or start a backup. Do not treat this release as evidence that those actions were performed.
 
-The old 0.1.x app has no updater. Install 0.2.0 manually once; later versions are offered by the startup update check. Do not run an old binary against the migrated database.
+## Browse and manage files
 
-## How backups work
+Files now follows the selected Explorer layout: integrated folder tabs, Back/Forward/Up/Refresh, editable address and breadcrumbs, folder filtering, compact New/Sort/View/more commands, normal shortcuts, preview and status panes. View offers extra large, large, medium and small icons, list, details, tiles and content. Tabs, histories, view choices, pane widths and visible/resized columns use the existing local browser-state record. Ctrl+T/W open/close tabs; Ctrl+L edits the address; Alt+Left/Right/Up navigate; Alt+P toggles preview; F5 refreshes; F2 renames; Ctrl+Shift+N creates a folder. View modes, columns, keyboard flows and persistence have focused fixture and native coverage; full Explorer parity is not claimed.
 
-- `OmniSync/<device-id>/files/<source-name>-<source-id>/` contains readable files with their original relative paths.
-- `versions/` holds immutable, SHA-256-verified versions. `catalogs/` holds recovery catalogs. `conflicts/` retains destination edits after acknowledgment.
-- Each current readable file and its latest version snapshot are separate copies. Plan for at least twice the initial included data, plus historical versions, temporary copies and the configured free-space reserve. No automatic version pruning is performed.
-- A temporary file is written, flushed and read back for integrity before publication. Interrupted transfers retain existing files and retry safely.
-- Excluding a file, removing a source, deleting a local source or uninstalling retains existing backups. Source files are never silently restored or deleted.
-- Restore verifies bytes, writes outside protected folders and uses a numbered filename if a destination already exists. Choose an old backup destination and use **Restore → Find recovery catalogs** to browse its versions.
+Right-click a selected item opens a compact file menu with standard actions and backup selection. Show more options (or Shift+F10) invokes the actual Windows shell context menu, including installed shell extensions. Properties, Copy and Cut retain their shell operations. Ctrl+V reads the Windows file clipboard. Delete uses the Windows Recycle Bin operation and reports cancellation; a location without a Recycle Bin may require Windows confirmation. Native shell context and Properties were observed; clipboard and internal same-volume moves used disposable files. External drag/drop remains unverified.
 
-The selected destination must exist, be writable and be separate from all sources and app data. A marker identifies the intended drive; an unavailable or substituted drive stops copying. Google Drive or another cloud client's own UI reports cloud-upload status. OmniSync's **Backed up** status confirms the local destination copy only.
+Drag between directories or tabs: same drive defaults to Move, another drive defaults to Copy; Ctrl forces Copy and Shift forces Move. External drops ask for Copy or Move. Dragging out of the window advertises Copy only: an external receiver cannot provide FileSolutions' verification guarantee for a move. All internal transfers refuse existing target names, lock source files against writes, copy into a temporary tree, read back SHA-256, then publish the complete tree. Only then may a move remove source files. Cancellation before publication retains sources; a failure after publication may leave both copies or a partially removed source tree with a complete destination. Earlier completed selected items remain completed and errors report that count. There is no silent merge/overwrite.
 
-Source support remains fixed local NTFS files and folders. Source links, junctions, offline placeholders and encrypted EFS files are excluded. Destination support now includes local, cloud-mounted, removable, mapped and network folders that provide normal Windows read/write/rename operations. Source rules and exclusion precedence are unchanged.
+The blue tile and filled white folder follow ContactSolutions' icon grammar. The approved Explorer reference supersedes its application appearance: the file browser and caption use Explorer neutral light/dark surfaces, density and interaction colors. Supporting management views retain ContactSolutions theme tokens. `assets/appearance.json` records the source commit and semantic mapping; `node scripts/generate-theme.mjs` generates the CSS variables. The existing Tauri/Rust architecture is retained instead of migrating to its eframe UI. Integrated titlebar controls include a system menu, minimize/maximize/restore and close-to-tray. Alt+Space opens the system menu. Quit from the tray to exit the backup service.
 
-## Updates
+## Include, exclude and destinations
 
-The app checks the repository's latest stable GitHub Release on startup; Settings has a manual check. Checks are nonblocking and network failure does not stop folder backups. Download is optional. The app verifies the release asset's size and SHA-256 before offering **Close OmniSync & install**. Installing requires that explicit choice and Windows administrator confirmation. Setup waits for OmniSync to finish a checkpoint and close; it never terminates the app or Explorer. Open the new version from the Start menu afterward.
+The file context menu offers Add to backup for a new source, Remove from backup and Change backup location for a direct source, and Exclude from backup/Include in backup plus parent-rule reset for inherited items. Changes use a calculated review and preserve source files and retained backups. Right-click a details column header to show Backup folder or Backup status. Backup folder resolves canonical destination assignments, distinguishing inherited, multiple and excluded state; status glyphs overlay the actual base icon with accessible text/tooltips. Windows shell-associated file icons are implemented through read-only APIs, with fallback vectors when unavailable; native output was observed in all eight views, with lossless PNG pixels to avoid SVG scaling seams.
 
-Current installers are **unsigned**. Windows may report an unknown publisher. A verified SHA-256 checksum does not substitute for an Authenticode publisher signature.
+Backup locations in the navigation pane lists canonical named destinations and offers a plus button. Adding a file or directory opens a chooser for an existing location or a new name/folder, then the existing configuration review. Each source retains one effective destination; overlapping sources are rejected, so inherited children keep their parent assignment. Older destination records remain available for restores. Source/destination, destination/destination and app-data overlaps, reparse paths and substituted/disconnected locations retain existing validation. Sources require fixed local NTFS volumes. Configuration reviews currently require all registered destinations online.
 
-## Windows integration and data
+## Database and retained content
 
-Windows 11 x64 and Microsoft Edge WebView2 are required. The installer places versioned binaries in Program Files, adds a Start menu shortcut and offers five Explorer overlays and right-click commands. Overlay takeover is optional and reviews specific registrations before changing them. Recovery receipts remain in ProgramData/OmniSync/OverlayBackups. Windows' shared overlay limit still applies; a later sign-out may be needed to load a new shell DLL.
+The fresh profile is `%LOCALAPPDATA%\app.filesolutions.desktop`. Configuration revisions, selections, assignments, destination identities, backup status, history, queue, catalogs and browser state are transactional SQLite records in `state.sqlite` (WAL/FULL durability). No legacy profile is opened or migrated. No old backup/profile is removed.
 
-Per-user configuration, local records and the durable queue remain at `%LOCALAPPDATA%\app.omnisync.desktop`. SQLite migration archives legacy Google records and preserves configuration revisions. Old credential files are retained locally but are not loaded or used by 0.2. Uninstall retains sources, destination files and app data. Never publish this runtime directory or credentials.
+A destination contains only backup content under `FileSolutions/<device-id>/`: `files/<source-name>-<id>/` holds readable current files, `versions/` immutable retained copies, and `conflicts/` acknowledged independent destination edits. No identity marker, catalog JSON, tracking manifest, sidecar or log is written to a destination. Temporary files contain only data being copied and are cleaned on handled failure; a process/power failure can leave unpublished content fragments. Versions are retained indefinitely, as in 0.2; the stored priorVersions value is not an automatic pruning policy. Allow at least twice initial data size plus retained versions and staging space.
 
-The [HTML guide](docs/guide.html) has the full setup, destination layout, migration, restore and release instructions. Its editable source is [guide.json](docs/guide.json). Build it with `node scripts/build-docs.mjs`.
+Windows volume serial plus the destination directory's 128-bit file ID are recorded locally and rechecked. A replaced folder/disk at the same path fails closed. Filesystems unable to supply this identity are rejected. This protects against accidental substitution, not malicious clones of disk identities. Mapped/network paths depend on stable server file IDs; live SMB and cloud provider behavior require separate testing.
 
-## Build and release
+Restore uses local checkpoints or file history across all registered destinations, verifies the selected snapshot, and writes outside backup/source/app-data folders. Existing names receive a numbered restored filename. Exclusion, source removal and destination changes retain earlier versions.
 
-Prerequisites: Windows 11 x64, Rust 1.98.1 and Visual Studio MSVC C++ build tools/Windows SDK, Node 24, WebView2 and NSIS 3.11 (set `NSIS_DIR` if necessary).
+**Local database loss:** content files remain readable, but original-path mapping, version ordering, hashes, rules and history cannot be reconstructed automatically. There is intentionally no destination-side recovery catalog. Preserve a consistent SQLite backup of the app profile separately (close FileSolutions first or use SQLite's backup API, including WAL recovery). Merely copying the database while it is running is not a supported recovery backup. Automated database export/rebuild is not implemented.
 
-For one local verification/package pass, run:
+## Build and isolated verification
+
+Windows 11 x64, Rust 1.98.1/MSVC tools, Node 24, WebView2 and NSIS 3.11 are required.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1
@@ -57,18 +51,24 @@ npm run test:ui
 node --test scripts/release-artifact.test.mjs
 ```
 
-The packaging script already runs npm ci, version checks, guide generation, the frontend build, Rust tests, the production native build and the shell-DLL smoke test. Do not repeat those commands immediately before it. Debug Rust tests and the production custom-protocol build use different profiles/features and remain separate required checks. Local development: `npm run desktop`.
+The packaging script already installs dependencies, checks versions, generates the guide, builds the frontend, runs Rust tests, builds production binaries and verifies the shell DLL. Generate icons only when their source changes. Do not repeat these steps immediately before packaging.
 
-Finish source, versions, release notes and workflow edits before the final main CI run. CI builds and tests main pushes and pull requests once per event. After the exact main commit passes every gate, an explicitly authorized matching version tag promotes its immutable Windows artifact without recompiling. A missing, expired or mismatched artifact stops publication; never substitute a PR/manual build or skip tests. Finish main CI before tagging. The producer artifact is retained for 30 days; rerun main CI for that exact commit if it has expired.
+The package is `out/FileSolutions-Setup-0.3.0-x64.exe` with SHA-256 checksum. Current binaries, shell registration IDs, updater URLs, registry names, shortcuts and data identity use FileSolutions. Setup does not delete the former product or data. The owner handles uninstall. Installers are unsigned. Never run installation/registration/takeover during a development smoke test.
 
-The tag job verifies the producer repository, workflow, successful main push, run attempt, commit, version, target, toolchain/features, archive digest and final installer/checksum bytes. It never overwrites a release and downloads the published assets to verify the final bytes. Publication does not install the application. See [release workflow](docs/release-workflow.md) for cache policy, recovery and authorization boundaries.
+For native testing set `FILESOLUTIONS_PROFILE` to a disposable absolute directory before launching a built executable. This uses an isolated status cache and skips startup registry writes. Use only disposable trees for file/backup actions. No tests need the owner's real profile. UI IPC fixtures do not prove native shell behavior. See `docs/filesolutions-verification.json` for actual checked scope, artifact hashes and remaining gaps.
 
-Before main CI, update all version files (`Cargo.toml`, `Cargo.lock`, package manifests, `src-tauri/tauri.conf.json` and the NSIS fallback) and add `docs/releases/<version>.txt`. Any later source/version/workflow change needs CI for the new commit. The release job uses the repository token, with contents write and actions read; no personal token is required.
+## Scope limits
 
-For publisher signing, the existing `-Signed` build switch uses `OMNISYNC_SIGNTOOL`, `OMNISYNC_CERT_THUMBPRINT` and `OMNISYNC_TIMESTAMP_URL`. Never commit signing keys. Modern Explorer sparse-package tooling remains in `scripts/build-identity.ps1` for a separately configured publisher identity.
+This is not full Windows Explorer parity. Custom Explorer pins, cloud/device shortcuts, virtual folders/libraries, ZIP browsing, indexed recursive search, content preview handlers, thumbnails, shell namespace enumeration, internal transfer undo, merge/replace dialogs and outbound native Move remain unsupported. The preview pane shows file details and explicitly reports unavailable content previews. Gallery opens Pictures in large-icon view; Network delegates to Windows Network; Share opens available shell options. Folder search filters only the current listing. Source capture/internal transfer restrictions for links, offline/EFS files, alternate streams and filesystem metadata remain as documented in previous verification.
 
-## Verification and limits
+Remaining acceptance gaps: external incoming/outgoing drag/drop; mixed-monitor DPI, snap/drag-from-maximized placement, all physical resize edges and caption hover/pressed states; screen-reader accessibility; cross-volume moves/disconnection; live SMB/cloud behavior and remote directory-identity stability; native destination/restore pickers; and clean-VM installer/UAC, registration, taskbar/tray visuals, upgrade/uninstall and unattended setup. Shell menus and Properties were observed, but third-party extensions were not exercised. One pre-existing opt-in Rust fixture remains ignored. A successful build is not proof of those behaviors.
 
-Rust tests cover migration, destination changes, exclusions, immutable versions, restore collisions, interrupted copies, bad hashes, wrong destination identity, catalog progress, updater version/URL checks and Windows status cache behavior. Edge tests use explicit IPC fixtures to test the interface; they do not simulate real backup success in the shipped app. See [verification.json](docs/verification.json) for actual checked scope.
+## Repository and release
 
-Real network-share/provider behavior, UAC installation/upgrade on a clean Windows VM and provider-specific online-only hydration should be exercised on the intended storage. No unattended cleanup or remote deletion is performed. This is file backup, not VSS or a transactional database/system-image backup.
+[FileSolutions source repository](https://github.com/william-pyle/FileSolutions) is the renamed original repository, preserving history, issues, tags, releases and public visibility. No replacement repository was created. The source checkout directory remains unchanged to preserve active sessions.
+
+The GitHub workflow builds/tests main and PR changes. An authorized version tag promotes the exact successful main artifact after provenance and byte verification. The release incorporates the workflow changes from PR #1. Publication does not establish installation or complete native acceptance. Update all version manifests and release notes together; `node scripts/check-version.mjs` checks consistency. Signing uses FILESOLUTIONS_SIGNTOOL, FILESOLUTIONS_CERT_THUMBPRINT and FILESOLUTIONS_TIMESTAMP_URL. Never commit private signing files.
+
+## Workflow optimization
+
+This release integrates the artifact-promotion workflow from [PR 1](https://github.com/william-pyle/FileSolutions/pull/1). Finish all source/version/documentation/workflow changes before final main CI. After every gate passes for that exact main commit, an authorized matching tag promotes its immutable artifact without rebuilding. Missing, expired or mismatched producers/artifacts fail closed. Publication and installation remain separate authorization decisions. See [release workflow](docs/release-workflow.md) for the complete gate, cache, provenance and final-byte verification rules.

@@ -1,0 +1,232 @@
+{
+  "at": "2026-11-19T05:22:51.930Z",
+  "status": "implemented_partial_native_verification",
+  "artifact": {
+    "path": "out/FileSolutions-Setup-0.3.0-x64.exe",
+    "size": 4781569,
+    "sha256": "aa24cc0faba84b9a9faae9b364c21e280500b511dd6ae1f9c707b563a2390ff8",
+    "applicationSha256": "eab7d2a228e97eb75a93b5a29e6724e80f887c28576055cde83cada87bb7b155",
+    "signed": false,
+    "installerExecuted": false,
+    "nativeUITested": false,
+    "nativeVerificationScope": "Latest package launched with isolated profile and startup on/off verified. Final physical keyboard-focus retest stopped by owner Escape before observation. Caption/shell physical observations refer to preceding b22dfc build; chrome source unchanged.",
+    "accepted": false,
+    "predatesChromeCorrection": false,
+    "predatesExplorerVisualRevision": true
+  },
+  "physicalObservationsArtifact": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd",
+  "donor": {
+    "repository": "william-pyle/ContactSolutions",
+    "id": 1456328695,
+    "commit": "6f97202b4bceadbd6e468e345bd8f9622f7861ad",
+    "paths": [
+      "src/chrome.rs",
+      "src/window_chrome.rs",
+      "src/theme.rs"
+    ],
+    "license": "MIT Copyright (c) 2026 William Pyle"
+  },
+  "secondaryReference": {
+    "repository": "william-pyle/MessageSolutions",
+    "id": 1454531959,
+    "commit": "b1796db730c897f7ecd203b2e897f4eae7d01a3f",
+    "paths": [
+      "src/window_chrome.rs",
+      "packaging/window-verification.md"
+    ],
+    "copied": false
+  },
+  "scope": "Disposable profiles/trees only. No installation, release, push, registry takeover, Explorer restart or owner-data operation. Owner installed applications and original Explorer window preserved.",
+  "observed": [
+    "Supported runtime reset/Initialize/list_apps succeeded after owner reboot; fresh returned handles and native screenshots worked. This does not prove repair of the prior missing-pipe failure.",
+    "ContactSolutions isolated demo: actual native light/dark normal/maximized captures reviewed at120 DPI. Donor checkouts unchanged.",
+    "b22dfc packaged native: right edge1220x900→1120x900; bottom-right→1020x800; pointer title drag origin32,32→157,102 physical pixels; double-click maximize2048x1232; Restore control returned1020x800.",
+    "b22dfc packaged native: light/dark normal/maximized desktop views compared against ContactSolutions at125% scaling. Source-derived glyph geometry, button alignment and titlebar surfaces match; app tile stays blue and external shadow intentionally absent.",
+    "Native icon menu, Alt+Space, menu x maximize, Escape dismissal and Restore click observed on earlier corrected-caption package. CDP real window-state checks verified minimize and close-to-tray, separately from physical input.",
+    "b22dfc packaged native: actual Windows IContextMenu rendered built-in verbs plus installed extensions; Properties opened real Windows file dialog for disposable52-byte fixture. Extensions were not invoked.",
+    "Debug native same-directory-to-child move passed. b22dfc native drag to another folder tab passed: source absent, target file SHA2562a1646098d39817d0442bfcd0a503e247f6cf3cc2bda8002aef8ec0f20cb6c9a. Subsequent launcher intentionally reseeds source for later tests.",
+    "Final aa24cc package: isolated startup false→true→false preview/apply kept owner HKCU Run FileSolutions value absent at every check."
+  ],
+  "failures": [
+    {
+      "kind": "product",
+      "failure": "Asynchronous captionPointer IPC failed actual title drag while ContactSolutions passed same gesture.",
+      "fix": "Removed bridge; use native WebView2 app-region drag/no-drag already enabled by pinned Wry. Packaged physical drag/double-click passed."
+    },
+    {
+      "kind": "product",
+      "failure": "Tauri undecorated shadow mode handled top border only; actual right/bottom resize failed.",
+      "fix": "Disable shadow to reuse existing Tauri full-border child resize handler. Debug and packaged edge/corner checks passed."
+    },
+    {
+      "kind": "product",
+      "failure": "Creating tab/rebuilding browser removed focused button/input. Ctrl+L then did nothing. Reproduced native and failing Playwright toBeFocused assertion.",
+      "fix": "Retain keyboard focus on stable browser host across render. Eight browser tests passed, including new Ctrl+L/select-all/Copy regression. Final physical retest interrupted."
+    },
+    {
+      "kind": "product",
+      "failure": "Fixture apply path could update owner startup registration even with FILESOLUTIONS_PROFILE.",
+      "fix": "Apply now uses same profile guard as startup. Latest isolated false→true→false cycle left owner Run entry absent."
+    },
+    {
+      "kind": "fixture",
+      "failure": "Launcher assumed startup value existed; CDP initially attached before Tauri page ready.",
+      "fix": "Read optional property safely and poll page readiness. No startup registration write occurred."
+    },
+    {
+      "kind": "tool_or_environment",
+      "failure": "Historic missing pipe; current UIA Restore targeting did not change state once; external drag endpoint outside source bounds rejected.",
+      "fix": "Bounded supported reset after reboot restored current enumeration, not proof of historic repair. Fresh screenshot coordinate Restore worked. External drag remains unverified."
+    },
+    {
+      "kind": "owner_stop",
+      "failure": "Computer Use stopped by physical Escape during first state capture of latest package.",
+      "fix": "No further native input or helper calls issued; fixture left running; final native focus and updated report review checkpointed."
+    }
+  ],
+  "checks": [
+    {
+      "command": "cargo test -p filesolutions --locked window_chrome -- --nocapture",
+      "result": "2 passed; edge/corner/exclusion/maximized/layout checks at multiple DPI values"
+    },
+    {
+      "command": "npx playwright test tests/ui/chrome.spec.ts",
+      "result": "2 passed, light/dark vector geometry, interactions, native-state updates and failure fallback"
+    },
+    {
+      "command": "npx playwright test tests/ui/palette.spec.ts",
+      "result": "4 passed, 280 exact color/contrast assertions; earlier unchanged coverage retained"
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts -g \"keyboard commands retain\"",
+      "result": "Failed before fix: Address inactive after New tab then Ctrl+L"
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts",
+      "result": "8 passed after focus fix; tabs, keyboard, shell IPC, drag intent, theme and responsive views"
+    },
+    {
+      "command": "node scripts/check-source.mjs; node scripts/check-version.mjs; git diff --check",
+      "result": "140 source/asset files audited; version0.3.0 consistent; diff check passed with line-ending warnings only"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -SkipTests",
+      "result": "Exit0; frontend, release binaries, NSIS and shell smoke passed. Nonfatal LNK4104 DLL export warnings remain."
+    }
+  ],
+  "remaining": [
+    "Final aa24cc package: native keyboard-focus regression recheck pending; owner stopped Computer Use with physical Escape. Latest fixture PID 32996 left running in isolated profile, not closed after stop.",
+    "External incoming/outgoing drag/drop unverified: native helper rejected endpoint (-40,600) outside Explorer source window bounds 1415x1143. No transfer occurred; source hash preserved.",
+    "Mixed-monitor DPI, snap/drag-from-maximized placement, all eight physical resize directions, assistive technology and native caption hover/pressed acceptance remain open. Right edge/corner and normal/maximized geometry observed at 125%; synthetic hit tests cover 100–300%.",
+    "Physical cross-volume disconnection, live SMB/cloud destinations and remote directory-identity stability remain unverified.",
+    "Native destination/restore pickers and clean-VM installer/UAC/shell registration remain unverified. No owner-machine installation, registration or Explorer restart authorized.",
+    "Updated Workspace native gallery and artifact reports rebuilt, but post-change rendered review remains pending after owner stopped Computer Use."
+  ],
+  "adaptations": [
+    "SVG paths replace egui painter calls;48px title,42px buttons,10px glyphs,1px stroke. Contact MIT notice/license retained and packaged.",
+    "Native WebView2 app-region supplies child-window caption gestures; donor Win32 hit-testing/system menu adapted to HWND and Tauri.",
+    "Disable external shadow to enable full-border resize. Close hides backup service to tray. Blue folder remains fixed across themes.",
+    "MessageSolutions source inspected read-only for fallback; no MessageSolutions code copied."
+  ],
+  "screenshots": [
+    {
+      "path": "assets/filesolutions-chrome-light-normal.png",
+      "sha256": "c79aa5fbf3cb324a255869ef70d08e59ddd0703601aa1060c7e5e6900e2b4c4a",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd",
+      "theme": "light",
+      "mode": "normal",
+      "dpi": 120
+    },
+    {
+      "path": "assets/contact-chrome-light-normal.png",
+      "sha256": "e6596c3882e6329209ca8cf3bb3960de63617c27b7c13cf155c32dc2a85395c2",
+      "artifactOrCommit": "6f97202b4bceadbd6e468e345bd8f9622f7861ad",
+      "theme": "light",
+      "mode": "normal",
+      "dpi": 120
+    },
+    {
+      "path": "assets/filesolutions-chrome-light-maximized.png",
+      "sha256": "4a8ae045274427dbb5b7955ac1243ca363795048f6e0e31226dccdadf0edd160",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd",
+      "theme": "light",
+      "mode": "maximized",
+      "dpi": 120
+    },
+    {
+      "path": "assets/contact-chrome-light-maximized.png",
+      "sha256": "5d80b8d9954e23ebf5dbb900b00541fc52cf0877351ed995220eb4113ef0065f",
+      "artifactOrCommit": "6f97202b4bceadbd6e468e345bd8f9622f7861ad",
+      "theme": "light",
+      "mode": "maximized",
+      "dpi": 120
+    },
+    {
+      "path": "assets/filesolutions-chrome-dark-normal.png",
+      "sha256": "892fa1202820714342a45e7a12d01351d0fd0edf7f0f01b133971618f47972b2",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd",
+      "theme": "dark",
+      "mode": "normal",
+      "dpi": 120
+    },
+    {
+      "path": "assets/contact-chrome-dark-normal.png",
+      "sha256": "1e644dcdc43a9211e8775d817b024b9634397c2d3633620c756f2986b53fc96e",
+      "artifactOrCommit": "6f97202b4bceadbd6e468e345bd8f9622f7861ad",
+      "theme": "dark",
+      "mode": "normal",
+      "dpi": 120
+    },
+    {
+      "path": "assets/filesolutions-chrome-dark-maximized.png",
+      "sha256": "35df67da1736c0e7695992aa948e4b4dc2b90234b152c17e7756f22fb4e70a23",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd",
+      "theme": "dark",
+      "mode": "maximized",
+      "dpi": 120
+    },
+    {
+      "path": "assets/contact-chrome-dark-maximized.png",
+      "sha256": "3122ffcfcdf7213dba15f3dd1831a652ce5d5aa3e55d83d02b2b3cbb056156fb",
+      "artifactOrCommit": "6f97202b4bceadbd6e468e345bd8f9622f7861ad",
+      "theme": "dark",
+      "mode": "maximized",
+      "dpi": 120
+    },
+    {
+      "path": "assets/filesolutions-shell-context.png",
+      "sha256": "3a608e7e35aee137759c16e8099c5f6efc425d64216ba2fa1794b06a65e34154",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd"
+    },
+    {
+      "path": "assets/filesolutions-shell-properties.png",
+      "sha256": "a1a8bd0fe24cbd19027ec2dd057062204cc202f7038c0ed16867218d9f483bec",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd"
+    },
+    {
+      "path": "assets/filesolutions-resize-proof.png",
+      "sha256": "79dcf968439c5372acfcd2f9f25df7d0648c09549afff0961424b5ce52cb6aa0",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd"
+    },
+    {
+      "path": "assets/filesolutions-tab-transfer.png",
+      "sha256": "f74e176d820584de674ccbaca83dff53d9106ebad5b555be842fd06fcd74ddac",
+      "artifactOrCommit": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd"
+    }
+  ],
+  "currentSourceStatus": {
+    "at": "2026-11-19T06:38:51.419Z",
+    "status": "explorer_isolated_verified_with_remaining_gaps",
+    "priorEvidenceScope": "Older reports/artifacts below remain historical; current Explorer evidence is explorer-verification.json.",
+    "compiled": true,
+    "acceptanceTested": "partial isolated automated/native",
+    "nativeObserved": true,
+    "ownerVisualAccepted": true,
+    "fullAcceptance": false,
+    "installerRebuilt": false,
+    "published": false,
+    "installed": false,
+    "applicationSha256": "d5f3cebe38033ce6415626cebdece59aec5d13c1e5a510791936c3cbdf78640b",
+    "verification": "explorer-verification.json"
+  }
+}

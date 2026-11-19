@@ -1,0 +1,412 @@
+{
+  "at": "2026-11-19T06:38:51.419Z",
+  "status": "isolated_checks_passed_with_remaining_acceptance",
+  "ownerVisualDirectionApproved": true,
+  "checks": [
+    {
+      "name": "Frontend production build",
+      "result": "passed",
+      "log": ".local/explorer-frontend-build-final.log"
+    },
+    {
+      "name": "Rust workspace check",
+      "result": "passed",
+      "log": ".local/explorer-cargo-check.log"
+    },
+    {
+      "name": "Core including destination chooser, content-only destinations, retained copies and DB reopen",
+      "result": "26 passed; 1 pre-existing opt-in fixture ignored",
+      "log": ".local/explorer-core-tests.log"
+    },
+    {
+      "name": "Window hit testing and profile-specific instance separation",
+      "result": "3 passed",
+      "log": ".local/explorer-window-tests.log"
+    },
+    {
+      "name": "Browser/chrome/management UI",
+      "result": "27 passed; remaining fixture key typo fixed and focused case passed",
+      "log": ".local/explorer-ui-second.log"
+    },
+    {
+      "name": "Explorer palette/contrast/attached overlays",
+      "result": "5 passed",
+      "log": ".local/explorer-palette-final.log"
+    },
+    {
+      "name": "Manual run across multiple destinations and rescan checkpoint",
+      "result": "2 passed after reproducing dropped manual request; affected engine group 14 passed",
+      "log": ".local/explorer-engine-final.log"
+    },
+    {
+      "name": "Compact drives and current breadcrumb after resize",
+      "result": "1 passed",
+      "log": ".local/explorer-breadcrumb-regression.log"
+    },
+    {
+      "name": "Shell PNG pixel/alpha round-trip",
+      "result": "1 passed",
+      "log": ".local/explorer-icon-pixels.log"
+    },
+    {
+      "name": "Latest embedded native binary",
+      "result": "built and observed; SHA-256 4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b",
+      "log": ".local/explorer-native-png-build.log"
+    },
+    {
+      "name": "Current native views and persistence",
+      "result": "passed",
+      "log": ".local/explorer-native-png-final.log"
+    },
+    {
+      "name": "Source generation changes during manual backup",
+      "result": "Reproduced stale-stage skip; fixed by recapturing in same pass; affected engine group 14 passed",
+      "log": ".local/explorer-engine-generation-final.log"
+    },
+    {
+      "name": "Final native backup/version retention and persistence",
+      "result": "passed; exact source and retained-content hashes recorded",
+      "log": ".local/explorer-final-backup.log"
+    },
+    {
+      "name": "Canonical Workspace verifier",
+      "result": "85 passed; 11 routes preserved; light/dark 390/768/1440; all 35 original views and local downloads",
+      "log": ".local/explorer-workspace-verify-final.log"
+    },
+    {
+      "name": "Updated reports rendered review",
+      "result": "8 page captures plus image previews, no page errors, 390px light/1420px dark",
+      "log": ".local/explorer-report-render/render.json"
+    }
+  ],
+  "failures": [
+    {
+      "kind": "fixture",
+      "cause": "Old UI headings/menu routing and missing canonical destination/location/icon data",
+      "resolution": "Updated affected fixtures; current tests pass"
+    },
+    {
+      "kind": "fixture",
+      "cause": "New test omitted serde_json macro qualification; Playwright Alt+Left spelling",
+      "resolution": "Qualified macro and used Alt+ArrowLeft"
+    },
+    {
+      "kind": "product",
+      "cause": "Compact Sort/View spans hidden without accessible names",
+      "resolution": "Added explicit accessible labels/tooltips; 780px cases pass"
+    },
+    {
+      "kind": "product",
+      "cause": "Initial Ctrl+L outside file pane lost shortcut routing",
+      "resolution": "Initial focus and document fallback routing; focused keyboard regressions pass"
+    },
+    {
+      "kind": "isolation preflight",
+      "cause": "Single-instance plugin used production identifier for isolated profiles",
+      "resolution": "Canonical profile-specific identifier and no production running mutex; unit check passes, native coexistence pending"
+    },
+    {
+      "kind": "product",
+      "cause": "Manual Sync now was consumed by a safe source rescan, leaving a pending file when automatic backup was off",
+      "reproduced": ".local/explorer-rescan-repro.log",
+      "resolution": "Requeue manual request after dirty-source interruption; preserve job without IO retry penalty; regression and native pending-file recovery passed"
+    },
+    {
+      "kind": "product",
+      "cause": "Old drive-grid CSS enlarged labels; native restore clipped current breadcrumb",
+      "resolution": "Scoped Explorer drive styles and resize-aware current-folder scrolling; focused render check passed"
+    },
+    {
+      "kind": "fixture",
+      "cause": "Clipboard polling threw ENOENT before async copy completed",
+      "resolution": "Destination appeared; subsequent source/destination byte comparison passed"
+    },
+    {
+      "kind": "environment",
+      "cause": "Native helper chose 14px transient bounds after maximize, making one indexed click ineffective and one coordinate out of bounds",
+      "resolution": "Refreshed screenshot and targeted returned main-window screenshot ID; Restore passed. No reset/CLI restart performed."
+    },
+    {
+      "kind": "product",
+      "cause": "SVG paths per shell-pixel run introduced scaling seams in real large icons",
+      "resolution": "Reused existing PNG/base64 codecs; request 256px shell icons; lossless RGBA conversion test and native before/after visual inspection passed",
+      "before": "assets/filesolutions-explorer-icon-seams-before.png",
+      "after": "assets/filesolutions-explorer-native-large.png"
+    },
+    {
+      "kind": "fixture",
+      "cause": "Owned process shutdown guard briefly saw an exiting process; dependent CDP check found the endpoint closed",
+      "resolution": "No force termination or overwrite; confirmed old fixture exited, then relaunched only owned profile and current checks passed"
+    },
+    {
+      "kind": "product",
+      "cause": "After a source generation change, manual backup discarded the old staged job but skipped recapturing in that run",
+      "reproduced": ".local/explorer-generation-repro.log",
+      "resolution": "Discard stale staging and capture current generation immediately; regression passed and final native backup retains older version."
+    },
+    {
+      "kind": "fixture",
+      "cause": "Workspace verifier expected old overview heading and visible historical screenshot link",
+      "resolution": "Scoped gallery to expanded historical section and updated current heading; all 85 checks passed."
+    },
+    {
+      "kind": "source audit",
+      "cause": "New application verification JSON contained absolute private workspace paths",
+      "resolution": "Kept exact paths in canonical Workspace record; made app-repository report paths relative. Source audit passed."
+    }
+  ],
+  "native": {
+    "status": "partial_acceptance_passed",
+    "helperEnumeration": "succeeded without reset; does not claim repair of earlier pipe failure",
+    "preservedEarlierFixturePid": 32996,
+    "profile": ".local/explorer-runtime-20261119-001227/profile",
+    "exe": ".local/explorer-runtime-20261119-001227/bin/FileSolutions.exe",
+    "root": ".local/explorer-runtime-20261119-001227",
+    "sha256": "d5f3cebe38033ce6415626cebdece59aec5d13c1e5a510791936c3cbdf78640b",
+    "cdp": 9339,
+    "processId": 39052,
+    "checkReport": ".local/explorer-runtime-20261119-001227/evidence/native-fixed-checks.json",
+    "observed": [
+      "Native configuration chooser: file and folder to separate canonical destinations",
+      "Exclusion, three backed-up files, six destination content files only",
+      "Real SQLite configuration/browser persistence through process restart",
+      "Real Windows associated file/known-folder icons and attached overlays",
+      "Native light/dark normal and maximized screenshots",
+      "Physical icon/system menu, titlebar double-click, Restore button, drag and corner resize",
+      "Physical Windows shell context and Properties",
+      "Physical internal same-volume move and Windows clipboard copy: exact fixture bytes verified",
+      "Old PID32996 remains alive; owner FileSolutions Run entry unchanged",
+      "Physical Minimize observed by native helper; restored successfully",
+      "Close to tray hid the fixture; same-profile second invocation restored the original PID",
+      "All eight native view modes persisted; icons decoded with overlays; current binary normal/maximized light/dark captured",
+      "Final changed-file backup preserves previous snapshot; all 7 destination files are content only; counts 3 backed up, 1 excluded, 0 pending/issues."
+    ],
+    "pending": [
+      "External Windows drag/drop",
+      "Mixed-monitor DPI",
+      "Cross-volume native move",
+      "Installer remains historical; no installer churn authorized by testing resume",
+      "Native folder/restore pickers, snap placement, all resize edges, accessibility screen-reader acceptance"
+    ],
+    "historicalPipeFailure": "Retained; healthy current enumeration is not proof of repair.",
+    "finalBinaryChecks": {
+      "at": "2026-11-19T06:30:48.924Z",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b",
+      "processId": 6048,
+      "checks": [
+        "Current rebuilt binary reopened unchanged SQLite config and independent tabs/columns.",
+        "All eight views decoded native shell icons with attached overlays and persisted view choice.",
+        "Final breadcrumb resize fix observed after native restore.",
+        "Current native light/dark normal/maximized captures at devicePixelRatio 1.25."
+      ],
+      "captures": [
+        "current-native-extra-large.png",
+        "current-native-large.png",
+        "current-native-medium.png",
+        "current-native-small.png",
+        "current-native-list.png",
+        "current-native-details.png",
+        "current-native-tiles.png",
+        "current-native-content.png",
+        "current-native-dark-maximized.png",
+        "current-native-light-normal.png",
+        "current-native-light-maximized.png",
+        "current-native-dark-normal.png"
+      ],
+      "error": null,
+      "dimensions": {
+        "width": 1220,
+        "height": 900,
+        "dpiScale": 1.25
+      },
+      "counts": {
+        "backedUp": 3,
+        "excluded": 1,
+        "issues": 0,
+        "pending": 0,
+        "retained": 0
+      }
+    },
+    "historicalPhysicalBinary": "e2916c92de8c23a69650356d7400212dcbab635e0e9e9eb254b3d5e4463592cc (physical checks; final changes affect breadcrumb resize and icon encoding only)",
+    "finalBackup": {
+      "at": "2026-11-19T06:37:59.900Z",
+      "binary": "d5f3cebe38033ce6415626cebdece59aec5d13c1e5a510791936c3cbdf78640b",
+      "processId": 39052,
+      "checks": [
+        "Final binary retains real config/browser state after restart.",
+        "Final binary manual backup saves changed source; previous verified version remains in local history.",
+        "All seven destination files inspected: three current copies plus four retained content versions; original version bytes preserved; no tracking files."
+      ],
+      "error": null,
+      "destinationFiles": [
+        {
+          "path": "archive-a\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\files\\source-b94fd420-7435-44d2-b959-45985c966dd8\\alpha.txt",
+          "sha256": "76bfda5e6de79545a670e75f5d5e178bee436d067bab2406396b24b122534246"
+        },
+        {
+          "path": "archive-a\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\files\\source-b94fd420-7435-44d2-b959-45985c966dd8\\Photos\\plan.txt",
+          "sha256": "03b42ebc593ea30c2f19a63df9919bfe8528af3c87b22067ea4563fb31c14914"
+        },
+        {
+          "path": "archive-a\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\versions\\b94fd420-7435-44d2-b959-45985c966dd8\\0cea20d1-b141-43dc-bc0b-45e8cd559f7e\\26f79e35-0507-4b9a-a1a5-4c2afbce063e\\alpha.txt",
+          "sha256": "76bfda5e6de79545a670e75f5d5e178bee436d067bab2406396b24b122534246"
+        },
+        {
+          "path": "archive-a\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\versions\\b94fd420-7435-44d2-b959-45985c966dd8\\0cea20d1-b141-43dc-bc0b-45e8cd559f7e\\50b539f5-b8e1-4e77-b0f8-eda11824ddbc\\alpha.txt",
+          "sha256": "5595acf84ca60b31896e99338c4df2735907a23cfed33ceaa1f32bd69e1f5f86"
+        },
+        {
+          "path": "archive-a\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\versions\\b94fd420-7435-44d2-b959-45985c966dd8\\e6859afe-b86a-4086-9839-35261387df91\\f3822142-8ea2-4f34-8a20-27c43c52ee0c\\plan.txt",
+          "sha256": "03b42ebc593ea30c2f19a63df9919bfe8528af3c87b22067ea4563fb31c14914"
+        },
+        {
+          "path": "archive-b\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\files\\standalone_txt-0be6b17f-9684-4131-bc07-3faad459aa43\\standalone.txt",
+          "sha256": "4bb03d0c06ec25d121249d41c41a7259a096c59608d150cfd888f7e5a970b4e5"
+        },
+        {
+          "path": "archive-b\\FileSolutions\\c970e0e6-5b74-468c-8ebd-d68232490122\\versions\\0be6b17f-9684-4131-bc07-3faad459aa43\\a58a868b-1494-4ba5-b8d0-3f0a9b7e21a0\\84c4ed66-86d3-4ccc-bf09-9c9db83a5036\\standalone.txt",
+          "sha256": "4bb03d0c06ec25d121249d41c41a7259a096c59608d150cfd888f7e5a970b4e5"
+        }
+      ],
+      "counts": {
+        "backedUp": 3,
+        "excluded": 1,
+        "issues": 0,
+        "pending": 0,
+        "retained": 0
+      },
+      "capture": "final-native-dark-normal.png"
+    },
+    "finalVisualScope": "All-view/theme captures use 4142e33 (identical frontend/window/icon source). Final d5f3ce changes only stale staged-job recapture in core; final dark native capture and backup/retention/persistence checks observed.",
+    "reportReview": "Visually reviewed native light/dark/details/large/maximized and Workspace overview, requirements and gallery image preview. Grid seams fixed before acceptance checkpoint."
+  },
+  "published": false,
+  "installed": false,
+  "delivery": {
+    "implemented": true,
+    "compiled": true,
+    "isolatedTested": true,
+    "nativeObserved": true,
+    "fullAcceptance": false,
+    "installerRebuilt": false,
+    "published": false,
+    "installed": false
+  },
+  "testsSummary": "34 distinct browser/UI cases across affected runs; original core group 26 pass/1 opt-in ignore plus 2 manual-run regressions; affected engine group 14 pass after fix; 3 app Rust tests; 1 PNG round-trip; current native fixture checks.",
+  "assets": [
+    {
+      "path": "assets/filesolutions-explorer-native-extra-large.png",
+      "title": "native extra large",
+      "sha256": "20e3e9a27061129686c66f4c61cb19306df823bb438661cef609dd674f306727",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-large.png",
+      "title": "native large",
+      "sha256": "5d96753be4444bcb43f784a141c50963cfb139846a34785fc145ce3208aa79cc",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-medium.png",
+      "title": "native medium",
+      "sha256": "3357dad92ec30e3d7aeb89f5c48a942e00e72633aa8281eb0120fcaff500b5d1",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-small.png",
+      "title": "native small",
+      "sha256": "ba0a9dc68855ac1abb0c07a8bd7937cdf7ff55b6d1b95d10e9732aefe270cc3c",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-list.png",
+      "title": "native list",
+      "sha256": "e81999dc517cf59cc0d8764dda98550e51b2a5733bd40c72e996ee0b1fe08a24",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-details.png",
+      "title": "native details",
+      "sha256": "36c69f7758d0cd2f6f87bbd6554aa2b57c9c5d627fa2072a1de722ae74616584",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-tiles.png",
+      "title": "native tiles",
+      "sha256": "daafb49ded5c1c6ba9aa4fb4834a3f705376085cb7c798d20e57b3c2c3bded1c",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-content.png",
+      "title": "native content",
+      "sha256": "0f2e398300ff486d65dbb2d3df7a119c27741d4bcf3cc950589682db1b6beeca",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-dark-maximized.png",
+      "title": "native dark maximized",
+      "sha256": "ca51e1c716e99e8bdd658716b2011c09ee1de7dab8dff4c186df332cf8485806",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-light-normal.png",
+      "title": "native light normal",
+      "sha256": "c0507630fa6d0cd51cc183e205ff9dd813f804c658bf258df6a780a40f352bb6",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-light-maximized.png",
+      "title": "native light maximized",
+      "sha256": "67a7fe6ed7f40b0cfb2507fec6549f818a8bfdda74af528bcb6ca24070c50bb8",
+      "binary": "4142e33c198d443985579fddbd4ef465f2747e635cd8ce8b0810f92eae2d0b0b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-dark-normal.png",
+      "title": "native dark normal",
+      "sha256": "4e6b2021afbcda5665460a5fe4fd3060f09e033d168c5a6773c43ee9144d5686",
+      "binary": "d5f3cebe38033ce6415626cebdece59aec5d13c1e5a510791936c3cbdf78640b"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-system-menu.png",
+      "title": "native system menu",
+      "sha256": "d0e5bb18245dc667361f267e62fb76cca59efe17aa1de53a253ffe8712106f72",
+      "binary": "e2916c92de8c23a69650356d7400212dcbab635e0e9e9eb254b3d5e4463592cc (physical checks; final changes affect breadcrumb resize and icon encoding only)"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-shell-menu.png",
+      "title": "native shell menu",
+      "sha256": "6dbb112ead549e7b4c6172a08b289c2d9d210c2a1807a46565634b3459afeaf9",
+      "binary": "e2916c92de8c23a69650356d7400212dcbab635e0e9e9eb254b3d5e4463592cc (physical checks; final changes affect breadcrumb resize and icon encoding only)"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-properties.png",
+      "title": "native properties",
+      "sha256": "f4b7c6496f222bc74cbf9b852272f66215b8bf02b2d80d6e7d8a922efd868937",
+      "binary": "e2916c92de8c23a69650356d7400212dcbab635e0e9e9eb254b3d5e4463592cc (physical checks; final changes affect breadcrumb resize and icon encoding only)"
+    },
+    {
+      "path": "assets/filesolutions-explorer-native-drag-complete.png",
+      "title": "native drag complete",
+      "sha256": "4b08a6c25356f19c9a4be6052a4151168544d9e4ad8a8100b834305897a48562",
+      "binary": "e2916c92de8c23a69650356d7400212dcbab635e0e9e9eb254b3d5e4463592cc (physical checks; final changes affect breadcrumb resize and icon encoding only)"
+    },
+    {
+      "path": "assets/filesolutions-explorer-icon-seams-before.png",
+      "title": "icon seams before",
+      "sha256": "5d0c73a44c4f99dbf02d4a49687a7996e53d237f79cc56c3e5de97b9d5b7c1cb",
+      "binary": "e2916c92de8c23a69650356d7400212dcbab635e0e9e9eb254b3d5e4463592cc (physical checks; final changes affect breadcrumb resize and icon encoding only)"
+    }
+  ],
+  "evidenceFiles": [
+    "assets/evidence-explorer-engine-generation-final.txt",
+    "assets/evidence-explorer-generation-repro.txt",
+    "assets/evidence-explorer-icon-pixels.txt",
+    "assets/evidence-explorer-ui-second.txt",
+    "assets/evidence-explorer-palette-final.txt",
+    "assets/evidence-explorer-breadcrumb-regression.txt",
+    "assets/evidence-explorer-window-tests.txt",
+    "assets/evidence-explorer-workspace-verify-final.txt",
+    "assets/evidence-explorer-native-png-final.txt",
+    "assets/evidence-explorer-final-backup.txt"
+  ]
+}

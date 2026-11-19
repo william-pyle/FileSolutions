@@ -1,0 +1,16 @@
+FileSolutions 0.3.0
+
+Explorer-style Windows 11 x64 file browser with independent tabs, eight views, configurable columns, shell icons/status overlays and named backup locations. Retained content and transactional app-local SQLite tracking preserve prior backup versions. Includes fixes for manual backup rescan/source-generation handling, keyboard focus, compact navigation and shell icon rendering.
+
+Transition from OmniSync 0.2.0:
+Download FileSolutions-Setup-0.3.0-x64.exe and its SHA-256 sidecar manually. OmniSync 0.2.0 expects the former asset name and cannot automatically consume this release. FileSolutions installs separately and starts a fresh profile; no automatic migration occurs. Old application data, selections, backups, shortcuts and pinned entries remain untouched. Keep the old application/data for its history; uninstall is a separate owner decision. Reconfigure new destinations and sources deliberately.
+
+Signing and verification:
+The Windows installer is unsigned and requires administrator approval. The exact tagged commit must pass trusted main Windows CI. The tag promotes that immutable artifact after provenance, archive digest and final-file verification; published bytes are checked again. Publication is not installation or complete native acceptance.
+
+Known gaps:
+External incoming/outgoing drag/drop; mixed-monitor DPI and snap/drag-from-maximized placement; all physical resize edges and caption hover/pressed states; screen-reader accessibility; cross-volume moves/disconnection; live SMB/cloud behavior and remote identity stability; native destination/restore pickers; clean-VM installer/UAC, shell registration, taskbar/tray visuals, upgrade/uninstall and unattended setup remain unverified. Shell menus/Properties were observed but third-party extensions were not exercised. One pre-existing opt-in Rust fixture remains ignored.
+
+Not full Explorer parity: no custom pins/cloud-device shortcuts, virtual folders/libraries, ZIP browsing, indexed recursive search, content previews/thumbnails, internal transfer undo or merge/replace UI. Outgoing native drag advertises Copy only. Database-loss reconstruction/export is not automated; retain a consistent backup of the local database separately. Configuration review requires all registered destinations online.
+
+No installation, Explorer/Alpha restart, registration or real-data backup/restore was performed as part of release publication. See README and the verification reports for the scope of prior isolated tests.

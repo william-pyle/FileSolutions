@@ -1,0 +1,15 @@
+[package]
+name = "filesolutions-setup"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+filesolutions-windows = { path = "../filesolutions-windows" }
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+uuid.workspace = true
+windows.workspace = true
+winreg = "0.55"

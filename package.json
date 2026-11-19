@@ -1,11 +1,11 @@
 {
-  "name": "omnisync",
-  "version": "0.2.0",
+  "name": "filesolutions",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 1420",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/generate-theme.mjs --check && tsc --noEmit && vite build",
     "icons": "node scripts/generate-icons.mjs",
     "tauri": "tauri",
     "desktop": "tauri dev",
@@ -30,6 +30,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/william-pyle/OmniSync.git"
+    "url": "https://github.com/william-pyle/FileSolutions.git"
   }
 }

@@ -1,0 +1,1790 @@
+{
+  "at": "2026-11-19T04:35:39.908Z",
+  "status": "browser_verified_native_pending",
+  "source": {
+    "product": "ContactSolutions",
+    "repository": "https://github.com/william-pyle/ContactSolutions",
+    "commit": "6f97202b4bceadbd6e468e345bd8f9622f7861ad",
+    "files": [
+      "src/theme.rs: Tokens::light, Tokens::dark",
+      "src/chrome.rs: window_buttons",
+      "src/widgets.rs: interaction color roles"
+    ],
+    "themeSha256": "c73d713527a58e4ab3c1dadf1ea00703d29969da551bef377797cd665ec0eafd",
+    "mapping": "src/theme.css and src/theme-components.css; existing layouts and Rust services retained",
+    "deviations": [
+      "Primary hover/press uses opaque hover/pressed with normal text for reliable contrast, instead of translucent accent.",
+      "Fixed blue/white folder branding is unchanged across themes. Native shell menus and Windows dialogs retain OS-controlled colors.",
+      "Derived shadows/scrims use the reference alpha bytes through CSS composition.",
+      "Small warning/error labels use ContactSolutions icon_yellow/icon_red instead of orange/red. Its light orange on panel measures only 4.36:1; chosen palette tokens meet 4.5:1 for these labels. Disabled controls retain the reference disabled color and are not claimed to meet active-text contrast.",
+      "Static tray/overlay status assets use ContactSolutions dark icon colors and canvas outline for visibility across shell backgrounds.",
+      "Status labels use the reference surface instead of pill_quiet fill: icon_yellow on the light quiet pill is 4.18:1, below the active small-text target."
+    ]
+  },
+  "checks": {
+    "paletteCases": 4,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "widths": [
+      780,
+      1280
+    ],
+    "views": [
+      "Files",
+      "Overview",
+      "Folders",
+      "Rules",
+      "Activity",
+      "Restore",
+      "Explorer",
+      "Settings"
+    ],
+    "assertions": 280,
+    "minimumCheckedActiveTextContrast": 4.578783295614968,
+    "states": [
+      "hover",
+      "pressed",
+      "selected",
+      "primary",
+      "menu",
+      "review dialog",
+      "destination inputs",
+      "close hover"
+    ],
+    "typecheck": "passed",
+    "sourceAudit": "passed: 133 source/asset files",
+    "diffCheck": "passed",
+    "iconUnchanged": [
+      {
+        "path": "assets/filesolutions.svg",
+        "sha256": "836bda8addb3e26afe1083998d2206a8c21154d87dd2c9a6330901af7c4dfd3b"
+      },
+      {
+        "path": "assets/icons/app.ico",
+        "sha256": "28874dea76c3827934f39d1585f25f495f58a8e7a3858dc06f51a12cb559ad1b"
+      },
+      {
+        "path": "assets/icons/app.png",
+        "sha256": "8e99789dd34f321cad42ddd9636aeee98af881941d78067ab51f3c2f528101f6"
+      }
+    ],
+    "visualReview": "Reviewed all eight app views plus menus/review/destination dialogs; light/dark and narrow/wide samples. Fixtures clearly labeled."
+  },
+  "scope": "Isolated Edge IPC fixture. No real files/backups, registry, installation or OS UI automation. This is not native Windows UI verification.",
+  "nativeUI": {
+    "passed": false,
+    "reason": "Previously observed missing native computer-use pipe; not retried. Native pointer, shell popup, drag/drop, DPI and Windows dialog verification remains open."
+  },
+  "packaging": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -SkipTests",
+    "exitCode": 0,
+    "artifact": {
+      "path": "out/FileSolutions-Setup-0.3.0-x64.exe",
+      "size": 4768832,
+      "sha256": "a98a98b55154653bbae9c3455135e4eec416df92dda72e7fa6ccb927531b1aa9",
+      "applicationSha256": "f4eca6e8daa15138c54b31289a7576dcd0fd7f97890646dc44cd143dffbd6fcd",
+      "signed": false,
+      "installerExecuted": false,
+      "nativeUITested": false
+    },
+    "shellDllSmoke": "5 overlays, 3 context commands, icon resources and COM lifetime verified without registration",
+    "runtimeUI": "Not launched for palette verification",
+    "log": ".local/build-packaged.log"
+  },
+  "published": false,
+  "installed": false,
+  "failuresResolved": [
+    "More specific old input selector bypassed input tokens; specificity corrected.",
+    "Hover assertion initially selected a hidden duplicate menu command; locator corrected.",
+    "Light orange/panel contrast 4.36:1 and yellow/quiet-pill 4.18:1; reference icon_yellow with reference surface used for small status labels."
+  ],
+  "evidence": [
+    {
+      "theme": "dark",
+      "width": 1280,
+      "scope": "Edge IPC-fixture rendering, not native Windows UI verification",
+      "checks": [
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar",
+          "property": "background-color",
+          "token": "nav",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".file-tabs",
+          "property": "background-color",
+          "token": "tab_strip",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".file-tab.active",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".file-commands",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".file-list",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": ".file-status",
+          "property": "background-color",
+          "token": "status_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(125, 136, 156)"
+        },
+        {
+          "selector": ".window-drag",
+          "backgroundToken": "title_bar",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 16.446145782505916
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "surface",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 14.663525896834425
+        },
+        {
+          "selector": ".file-status",
+          "backgroundToken": "status_bar",
+          "foreground": "rgb(180, 188, 203)",
+          "contrast": 9.494101916574605
+        },
+        {
+          "selector": "#file-address",
+          "backgroundToken": "input",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 14.663525896834425
+        },
+        {
+          "selector": "[data-entry][aria-selected=true]",
+          "property": "background-color",
+          "token": "selection",
+          "value": "rgb(31, 43, 64)"
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "selection",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 12.88926568027286
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(42, 50, 64)"
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "backgroundToken": "hover",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 11.695266420123398
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "pressed",
+          "value": "rgb(54, 64, 82)"
+        },
+        {
+          "selector": ".window-close",
+          "property": "background-color",
+          "token": "close_hover",
+          "value": "rgb(196, 43, 59)"
+        },
+        {
+          "selector": ".window-close",
+          "backgroundToken": "close_hover",
+          "foreground": "rgb(255, 255, 255)",
+          "contrast": 5.5912677280078515
+        },
+        {
+          "selector": ".file-menu details[open]>div",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".file-menu details[open] button",
+          "backgroundToken": "menu",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 13.61153572000001
+        },
+        {
+          "selector": ".modal",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "accent",
+          "value": "rgb(90, 162, 255)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "color",
+          "token": "on_accent",
+          "value": "rgb(8, 19, 43)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "accent",
+          "foreground": "rgb(8, 19, 43)",
+          "contrast": 7.0688383440397615
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(42, 50, 64)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "hover",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 11.695266420123398
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".badge",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".modal input",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": ".modal input",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(125, 136, 156)"
+        },
+        {
+          "selector": ".modal input",
+          "backgroundToken": "input",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 14.663525896834425
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "canvas",
+          "contrast": 16.446145782505916
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "canvas",
+          "contrast": 9.494101916574605
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "panel",
+          "contrast": 9.04928420777298
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "hover",
+          "contrast": 11.695266420123398
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "pressed",
+          "contrast": 9.467122621330152
+        },
+        {
+          "foregroundToken": "accent_text",
+          "backgroundToken": "surface",
+          "contrast": 8.517325327044864
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "panel",
+          "contrast": 7.695857124861861
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "panel",
+          "contrast": 9.302034168772192
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "surface",
+          "contrast": 7.198979427707427
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "surface",
+          "contrast": 8.70145476070342
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "surface",
+          "contrast": 5.981311724532828
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "panel",
+          "contrast": 6.3941452970542505
+        },
+        {
+          "foregroundToken": "on_accent",
+          "backgroundToken": "accent",
+          "contrast": 7.0688383440397615
+        },
+        {
+          "foregroundToken": "accent_soft_text",
+          "backgroundToken": "checked",
+          "contrast": 9.421454136418534
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 780,
+      "scope": "Edge IPC-fixture rendering, not native Windows UI verification",
+      "checks": [
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar",
+          "property": "background-color",
+          "token": "nav",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".file-tabs",
+          "property": "background-color",
+          "token": "tab_strip",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".file-tab.active",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".file-commands",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".file-list",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": ".file-status",
+          "property": "background-color",
+          "token": "status_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(125, 136, 156)"
+        },
+        {
+          "selector": ".window-drag",
+          "backgroundToken": "title_bar",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 16.446145782505916
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "surface",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 14.663525896834425
+        },
+        {
+          "selector": ".file-status",
+          "backgroundToken": "status_bar",
+          "foreground": "rgb(180, 188, 203)",
+          "contrast": 9.494101916574605
+        },
+        {
+          "selector": "#file-address",
+          "backgroundToken": "input",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 14.663525896834425
+        },
+        {
+          "selector": "[data-entry][aria-selected=true]",
+          "property": "background-color",
+          "token": "selection",
+          "value": "rgb(31, 43, 64)"
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "selection",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 12.88926568027286
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(42, 50, 64)"
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "backgroundToken": "hover",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 11.695266420123398
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "pressed",
+          "value": "rgb(54, 64, 82)"
+        },
+        {
+          "selector": ".window-close",
+          "property": "background-color",
+          "token": "close_hover",
+          "value": "rgb(196, 43, 59)"
+        },
+        {
+          "selector": ".window-close",
+          "backgroundToken": "close_hover",
+          "foreground": "rgb(255, 255, 255)",
+          "contrast": 5.5912677280078515
+        },
+        {
+          "selector": ".file-menu details[open]>div",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".file-menu details[open] button",
+          "backgroundToken": "menu",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 13.61153572000001
+        },
+        {
+          "selector": ".modal",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(32, 39, 51)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "accent",
+          "value": "rgb(90, 162, 255)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "color",
+          "token": "on_accent",
+          "value": "rgb(8, 19, 43)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "accent",
+          "foreground": "rgb(8, 19, 43)",
+          "contrast": 7.0688383440397615
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(42, 50, 64)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "hover",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 11.695266420123398
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".badge",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(18, 22, 29)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(31, 51, 88)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(207, 224, 255)",
+          "contrast": 9.421454136418534
+        },
+        {
+          "selector": ".modal input",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(27, 33, 43)"
+        },
+        {
+          "selector": ".modal input",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(125, 136, 156)"
+        },
+        {
+          "selector": ".modal input",
+          "backgroundToken": "input",
+          "foreground": "rgb(241, 244, 249)",
+          "contrast": 14.663525896834425
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "canvas",
+          "contrast": 16.446145782505916
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "canvas",
+          "contrast": 9.494101916574605
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "panel",
+          "contrast": 9.04928420777298
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "hover",
+          "contrast": 11.695266420123398
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "pressed",
+          "contrast": 9.467122621330152
+        },
+        {
+          "foregroundToken": "accent_text",
+          "backgroundToken": "surface",
+          "contrast": 8.517325327044864
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "panel",
+          "contrast": 7.695857124861861
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "panel",
+          "contrast": 9.302034168772192
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "surface",
+          "contrast": 7.198979427707427
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "surface",
+          "contrast": 8.70145476070342
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "surface",
+          "contrast": 5.981311724532828
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "panel",
+          "contrast": 6.3941452970542505
+        },
+        {
+          "foregroundToken": "on_accent",
+          "backgroundToken": "accent",
+          "contrast": 7.0688383440397615
+        },
+        {
+          "foregroundToken": "accent_soft_text",
+          "backgroundToken": "checked",
+          "contrast": 9.421454136418534
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "scope": "Edge IPC-fixture rendering, not native Windows UI verification",
+      "checks": [
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar",
+          "property": "background-color",
+          "token": "nav",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".file-tabs",
+          "property": "background-color",
+          "token": "tab_strip",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".file-tab.active",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-commands",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-list",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-status",
+          "property": "background-color",
+          "token": "status_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(127, 138, 158)"
+        },
+        {
+          "selector": ".window-drag",
+          "backgroundToken": "title_bar",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 14.272675960942953
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "surface",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "selector": ".file-status",
+          "backgroundToken": "status_bar",
+          "foreground": "rgb(90, 98, 115)",
+          "contrast": 5.557529801735857
+        },
+        {
+          "selector": "#file-address",
+          "backgroundToken": "input",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "selector": "[data-entry][aria-selected=true]",
+          "property": "background-color",
+          "token": "selection",
+          "value": "rgb(238, 244, 255)"
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "selection",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 14.243394462801355
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(232, 236, 242)"
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "backgroundToken": "hover",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 13.263715924717989
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "pressed",
+          "value": "rgb(214, 220, 230)"
+        },
+        {
+          "selector": ".window-close",
+          "property": "background-color",
+          "token": "close_hover",
+          "value": "rgb(196, 43, 59)"
+        },
+        {
+          "selector": ".window-close",
+          "backgroundToken": "close_hover",
+          "foreground": "rgb(255, 255, 255)",
+          "contrast": 5.5912677280078515
+        },
+        {
+          "selector": ".file-menu details[open]>div",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-menu details[open] button",
+          "backgroundToken": "menu",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "selector": ".modal",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "accent",
+          "value": "rgb(15, 104, 240)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "color",
+          "token": "on_accent",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "accent",
+          "foreground": "rgb(255, 255, 255)",
+          "contrast": 4.931092041899336
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(232, 236, 242)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "hover",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 13.263715924717989
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".badge",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".modal input",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".modal input",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(127, 138, 158)"
+        },
+        {
+          "selector": ".modal input",
+          "backgroundToken": "input",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "canvas",
+          "contrast": 14.272675960942953
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "canvas",
+          "contrast": 5.557529801735857
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "panel",
+          "contrast": 5.8129031849029245
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "hover",
+          "contrast": 13.263715924717989
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "pressed",
+          "contrast": 11.412224850892231
+        },
+        {
+          "foregroundToken": "accent_text",
+          "backgroundToken": "surface",
+          "contrast": 9.146163635945246
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "panel",
+          "contrast": 5.047699284272227
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "panel",
+          "contrast": 4.578783295614968
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "surface",
+          "contrast": 5.3174800225799
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "surface",
+          "contrast": 4.823502219717821
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "surface",
+          "contrast": 5.401126827963009
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "panel",
+          "contrast": 5.12710229432042
+        },
+        {
+          "foregroundToken": "on_accent",
+          "backgroundToken": "accent",
+          "contrast": 4.931092041899336
+        },
+        {
+          "foregroundToken": "accent_soft_text",
+          "backgroundToken": "checked",
+          "contrast": 7.762851411968203
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 780,
+      "scope": "Edge IPC-fixture rendering, not native Windows UI verification",
+      "checks": [
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar",
+          "property": "background-color",
+          "token": "nav",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".file-tabs",
+          "property": "background-color",
+          "token": "tab_strip",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".file-tab.active",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-commands",
+          "property": "background-color",
+          "token": "ribbon",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-list",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-status",
+          "property": "background-color",
+          "token": "status_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "#file-address",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(127, 138, 158)"
+        },
+        {
+          "selector": ".window-drag",
+          "backgroundToken": "title_bar",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 14.272675960942953
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "surface",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "selector": ".file-status",
+          "backgroundToken": "status_bar",
+          "foreground": "rgb(90, 98, 115)",
+          "contrast": 5.557529801735857
+        },
+        {
+          "selector": "#file-address",
+          "backgroundToken": "input",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "selector": "[data-entry][aria-selected=true]",
+          "property": "background-color",
+          "token": "selection",
+          "value": "rgb(238, 244, 255)"
+        },
+        {
+          "selector": ".file-name",
+          "backgroundToken": "selection",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 14.243394462801355
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(232, 236, 242)"
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "backgroundToken": "hover",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 13.263715924717989
+        },
+        {
+          "selector": ".file-commands [data-file=copy]",
+          "property": "background-color",
+          "token": "pressed",
+          "value": "rgb(214, 220, 230)"
+        },
+        {
+          "selector": ".window-close",
+          "property": "background-color",
+          "token": "close_hover",
+          "value": "rgb(196, 43, 59)"
+        },
+        {
+          "selector": ".window-close",
+          "backgroundToken": "close_hover",
+          "foreground": "rgb(255, 255, 255)",
+          "contrast": 5.5912677280078515
+        },
+        {
+          "selector": ".file-menu details[open]>div",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".file-menu details[open] button",
+          "backgroundToken": "menu",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "selector": ".modal",
+          "property": "background-color",
+          "token": "menu",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "accent",
+          "value": "rgb(15, 104, 240)"
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "color",
+          "token": "on_accent",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "accent",
+          "foreground": "rgb(255, 255, 255)",
+          "contrast": 4.931092041899336
+        },
+        {
+          "selector": ".modal .primary",
+          "property": "background-color",
+          "token": "hover",
+          "value": "rgb(232, 236, 242)"
+        },
+        {
+          "selector": ".modal .primary",
+          "backgroundToken": "hover",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 13.263715924717989
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".badge",
+          "property": "background-color",
+          "token": "surface",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".window-title",
+          "property": "background-color",
+          "token": "title_bar",
+          "value": "rgb(242, 244, 247)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "property": "background-color",
+          "token": "checked",
+          "value": "rgb(227, 237, 255)"
+        },
+        {
+          "selector": ".sidebar nav button.active",
+          "backgroundToken": "checked",
+          "foreground": "rgb(6, 52, 196)",
+          "contrast": 7.762851411968203
+        },
+        {
+          "selector": ".modal input",
+          "property": "background-color",
+          "token": "input",
+          "value": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": ".modal input",
+          "property": "border-top-color",
+          "token": "input_border",
+          "value": "rgb(127, 138, 158)"
+        },
+        {
+          "selector": ".modal input",
+          "backgroundToken": "input",
+          "foreground": "rgb(29, 35, 48)",
+          "contrast": 15.726391695796165
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "canvas",
+          "contrast": 14.272675960942953
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "canvas",
+          "contrast": 5.557529801735857
+        },
+        {
+          "foregroundToken": "text_dim",
+          "backgroundToken": "panel",
+          "contrast": 5.8129031849029245
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "hover",
+          "contrast": 13.263715924717989
+        },
+        {
+          "foregroundToken": "text",
+          "backgroundToken": "pressed",
+          "contrast": 11.412224850892231
+        },
+        {
+          "foregroundToken": "accent_text",
+          "backgroundToken": "surface",
+          "contrast": 9.146163635945246
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "panel",
+          "contrast": 5.047699284272227
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "panel",
+          "contrast": 4.578783295614968
+        },
+        {
+          "foregroundToken": "green",
+          "backgroundToken": "surface",
+          "contrast": 5.3174800225799
+        },
+        {
+          "foregroundToken": "icon_yellow",
+          "backgroundToken": "surface",
+          "contrast": 4.823502219717821
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "surface",
+          "contrast": 5.401126827963009
+        },
+        {
+          "foregroundToken": "icon_red",
+          "backgroundToken": "panel",
+          "contrast": 5.12710229432042
+        },
+        {
+          "foregroundToken": "on_accent",
+          "backgroundToken": "accent",
+          "contrast": 4.931092041899336
+        },
+        {
+          "foregroundToken": "accent_soft_text",
+          "backgroundToken": "checked",
+          "contrast": 7.762851411968203
+        }
+      ]
+    }
+  ],
+  "referenceUnchanged": {
+    "themeSha256": "c73d713527a58e4ab3c1dadf1ea00703d29969da551bef377797cd665ec0eafd",
+    "gitStatus": "clean"
+  },
+  "workspaceReview": {
+    "checks": 17,
+    "status": "passed",
+    "widths": [
+      1440,
+      768,
+      390
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "scope": "Report/guide layout, palette image preview/download and installer byte hash; no native UI verification"
+  },
+  "currentSourceStatus": {
+    "at": "2026-11-19T06:38:51.419Z",
+    "status": "explorer_isolated_verified_with_remaining_gaps",
+    "priorEvidenceScope": "Older reports/artifacts below remain historical; current Explorer evidence is explorer-verification.json.",
+    "compiled": true,
+    "acceptanceTested": "partial isolated automated/native",
+    "nativeObserved": true,
+    "ownerVisualAccepted": true,
+    "fullAcceptance": false,
+    "installerRebuilt": false,
+    "published": false,
+    "installed": false,
+    "applicationSha256": "d5f3cebe38033ce6415626cebdece59aec5d13c1e5a510791936c3cbdf78640b",
+    "verification": "explorer-verification.json"
+  }
+}

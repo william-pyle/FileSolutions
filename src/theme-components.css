@@ -1,0 +1,58 @@
+/* Semantic colors from ContactSolutions. Keep layout in the existing component styles. */
+html,body,#file-browser{background:var(--fs-canvas);color:var(--fs-text)}
+html[data-mak-report] a{color:var(--fs-accent-text)}
+::selection{background:var(--fs-selection);color:var(--fs-text)}
+button:hover{filter:none}
+button,.file-dialog button{background:var(--fs-surface);color:var(--fs-text);border-color:var(--fs-border-strong)}
+button:hover:not(:disabled),.file-dialog button:hover:not(:disabled){background:var(--fs-hover);color:var(--fs-text)}
+button:active:not(:disabled),.file-dialog button:active:not(:disabled){background:var(--fs-pressed);color:var(--fs-text)}
+button:disabled,#file-browser button:disabled{opacity:1;color:var(--fs-text-disabled)}
+.primary{background:var(--fs-accent);color:var(--fs-on-accent);border-color:var(--fs-accent)}
+.primary:disabled{background:var(--fs-pill-quiet);border-color:var(--fs-border);color:var(--fs-text-disabled)}
+.danger{color:var(--fs-icon-red)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,.file-list tr:focus-visible{outline:2px solid var(--fs-selection-edge);outline-offset:2px}
+input:not([type=checkbox]):not([type=radio]),select,.field input,.field select,.toolbar input,.toolbar select,.file-address input,.file-dialog input{background:var(--fs-input);color:var(--fs-text);border-color:var(--fs-input-border);accent-color:var(--fs-accent)}
+input::placeholder{color:var(--fs-text-dim);opacity:1}
+input:disabled,select:disabled{color:var(--fs-text-disabled);opacity:1}
+.app-layout>.sidebar{background:var(--fs-nav);border-color:var(--fs-border)}
+.sidebar nav button{background:transparent;color:var(--fs-text-dim)}
+.sidebar nav button:hover{background:var(--fs-hover);color:var(--fs-text)}
+.sidebar nav button:active{background:var(--fs-pressed);color:var(--fs-text)}
+.sidebar nav button.active{background:var(--fs-checked);color:var(--fs-accent-soft-text)}
+.file-tabs{background:var(--fs-tab-strip)}
+.file-tab.active{background:var(--fs-ribbon);box-shadow:inset 0 -2px var(--fs-accent)}
+#file-browser .file-tab>[role=tab]{color:var(--fs-text-dim)}
+#file-browser .file-tab.active>[role=tab]{color:var(--fs-text)}
+.file-menu,.file-commands{background:var(--fs-ribbon);border-color:var(--fs-border)}
+.file-menu details>div{background:var(--fs-menu);border-color:var(--fs-border-strong);box-shadow:0 4px 16px var(--fs-shadow-popup)}
+.file-menu summary:hover,.file-menu details[open]>summary{background:var(--fs-hover);color:var(--fs-text)}
+.file-menu summary:active{background:var(--fs-pressed)}
+#file-browser button{color:var(--fs-text)}
+#file-browser button:hover:not(:disabled){background:var(--fs-hover);border-color:var(--fs-border)}
+#file-browser button:active:not(:disabled){background:var(--fs-pressed);border-color:var(--fs-border-strong)}
+.file-places{background:var(--fs-panel);border-color:var(--fs-border)}
+.file-places h3{color:var(--fs-group-label)}
+.file-list,.file-list th{background:var(--fs-surface)}
+.file-list td,.file-list th{border-color:var(--fs-rule)}
+.file-list td:not(:first-child){color:var(--fs-text-dim)}
+.file-list tbody tr:hover{background:var(--fs-hover)}
+.file-list tr[aria-selected=true],.file-list tr[aria-selected=true]:hover{background:var(--fs-selection);box-shadow:inset 3px 0 var(--fs-selection-edge)}
+.file-glyph{color:var(--fs-icon)}
+.file-glyph.folder{color:var(--fs-icon-yellow)}
+.file-status{background:var(--fs-status-bar);color:var(--fs-text-dim);border-color:var(--fs-border)}
+.drive-grid button{background:var(--fs-surface)!important;border-color:var(--fs-border-strong)!important}
+.drive-grid button:hover{background:var(--fs-hover)!important}
+.drive-grid button:active{background:var(--fs-pressed)!important}
+.status-card,.metric,.folder-row,.settings-card,.rule-panel{background:var(--fs-panel);border-color:var(--fs-border)}
+.status-card{background:var(--fs-panel)}
+.orbit,.folder-icon{background:var(--fs-accent-soft)}
+.folder-icon{color:var(--fs-icon-yellow)}
+.notice,.onboarding,.empty{background:var(--fs-panel);border-color:var(--fs-border-strong);color:var(--fs-text-dim)}
+.badge{background:var(--fs-surface);border-color:var(--fs-border)}
+.badge.backed,.badge.syncing,.badge.pending,.badge.paused,.badge.issue{background:var(--fs-surface)}
+.badge.syncing,.preview-counts{color:var(--fs-accent-text)}
+.data-table th{background:var(--fs-panel)}
+.data-table td{background:var(--fs-surface)}
+.modal,.file-dialog,#toast{background:var(--fs-menu);color:var(--fs-text);border-color:var(--fs-border-strong);box-shadow:0 8px 28px var(--fs-shadow-window)}
+.modal-shade,.file-dialog::backdrop{background:var(--fs-scrim);backdrop-filter:none}
+.cleanup-list{border-color:var(--fs-border)}

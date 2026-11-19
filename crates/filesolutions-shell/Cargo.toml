@@ -1,0 +1,13 @@
+[package]
+name = "filesolutions-shell"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+filesolutions-windows = { path = "../filesolutions-windows" }
+windows.workspace = true
+windows-core = "=0.61.2"

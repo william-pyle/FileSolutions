@@ -14,22 +14,25 @@ try {
     Invoke-Checked 'node.exe' @('scripts/build-docs.mjs')
     Invoke-Checked 'npm.cmd' @('run','build')
     if (-not $SkipTests) { Invoke-Checked 'cargo.exe' @('test','--workspace','--locked') }
-    Invoke-Checked 'cargo.exe' @('build','--workspace','--release','--locked','--features','omnisync/custom-protocol')
+    Invoke-Checked 'cargo.exe' @('build','--workspace','--release','--locked','--features','filesolutions/custom-protocol')
     $version = (Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json).version
     $payload = Join-Path $repo "out/payload/$version"
     New-Item -ItemType Directory -Path (Join-Path $payload 'icons') -Force | Out-Null
-    foreach ($name in @('omnisync.exe','omnisync_shell.dll','omnisync-setup.exe')) {
+    foreach ($name in @('filesolutions.exe','filesolutions_shell.dll','filesolutions-setup.exe')) {
         Copy-Item -LiteralPath (Join-Path $repo "target/release/$name") -Destination $payload -Force
     }
     Get-ChildItem -LiteralPath (Join-Path $repo 'assets/icons') -Filter '*.ico' | Copy-Item -Destination (Join-Path $payload 'icons') -Force
     Copy-Item -LiteralPath (Join-Path $repo 'README.md') -Destination $payload -Force
+    Copy-Item -LiteralPath (Join-Path $repo 'THIRD_PARTY_NOTICES.md') -Destination $payload -Force
+    New-Item -ItemType Directory -Path (Join-Path $payload 'licenses') -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $repo 'licenses/ContactSolutions-LICENSE.txt') -Destination (Join-Path $payload 'licenses') -Force
     New-Item -ItemType Directory -Path (Join-Path $payload 'docs') -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $repo 'docs/guide.html') -Destination (Join-Path $payload 'docs') -Force
-    Invoke-Checked (Join-Path $payload 'omnisync-setup.exe') @('verify-shell')
+    Invoke-Checked (Join-Path $payload 'filesolutions-setup.exe') @('verify-shell')
     if ($Signed) {
-        if (-not $env:OMNISYNC_SIGNTOOL -or -not $env:OMNISYNC_CERT_THUMBPRINT -or -not $env:OMNISYNC_TIMESTAMP_URL) { throw 'Set all signing variables before using -Signed.' }
-        foreach ($name in @('omnisync.exe','omnisync_shell.dll','omnisync-setup.exe')) {
-            Invoke-Checked $env:OMNISYNC_SIGNTOOL @('sign','/sha1',$env:OMNISYNC_CERT_THUMBPRINT,'/fd','SHA256','/tr',$env:OMNISYNC_TIMESTAMP_URL,'/td','SHA256',(Join-Path $payload $name))
+        if (-not $env:FILESOLUTIONS_SIGNTOOL -or -not $env:FILESOLUTIONS_CERT_THUMBPRINT -or -not $env:FILESOLUTIONS_TIMESTAMP_URL) { throw 'Set all signing variables before using -Signed.' }
+        foreach ($name in @('filesolutions.exe','filesolutions_shell.dll','filesolutions-setup.exe')) {
+            Invoke-Checked $env:FILESOLUTIONS_SIGNTOOL @('sign','/sha1',$env:FILESOLUTIONS_CERT_THUMBPRINT,'/fd','SHA256','/tr',$env:FILESOLUTIONS_TIMESTAMP_URL,'/td','SHA256',(Join-Path $payload $name))
         }
     }
     $candidates = @(
@@ -40,9 +43,9 @@ try {
     ) | Where-Object { $_ -and (Test-Path -LiteralPath $_) }
     $compiler = $candidates | Select-Object -First 1
     if (-not $compiler) { throw 'NSIS 3 is required. Set NSIS_DIR to its directory.' }
-    $installer = Join-Path $repo "out/OmniSync-Setup-$version-x64.exe"
-    Invoke-Checked $compiler @("/DVERSION=$version","/DPAYLOAD=$payload","/DOUTPUT=$installer",(Join-Path $repo 'installer/OmniSync.nsi'))
-    if ($Signed) { Invoke-Checked $env:OMNISYNC_SIGNTOOL @('sign','/sha1',$env:OMNISYNC_CERT_THUMBPRINT,'/fd','SHA256','/tr',$env:OMNISYNC_TIMESTAMP_URL,'/td','SHA256',$installer) }
+    $installer = Join-Path $repo "out/FileSolutions-Setup-$version-x64.exe"
+    Invoke-Checked $compiler @("/DVERSION=$version","/DPAYLOAD=$payload","/DOUTPUT=$installer",(Join-Path $repo 'installer/FileSolutions.nsi'))
+    if ($Signed) { Invoke-Checked $env:FILESOLUTIONS_SIGNTOOL @('sign','/sha1',$env:FILESOLUTIONS_CERT_THUMBPRINT,'/fd','SHA256','/tr',$env:FILESOLUTIONS_TIMESTAMP_URL,'/td','SHA256',$installer) }
     $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $installer).Hash.ToLowerInvariant()
     "$hash  $(Split-Path -Leaf $installer)" | Set-Content -LiteralPath "$installer.sha256" -Encoding ascii
     Write-Output "Built $installer"

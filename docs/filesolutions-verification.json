@@ -1,0 +1,204 @@
+{
+  "product": "FileSolutions",
+  "version": "0.3.0",
+  "checkedAt": "2026-11-19T05:22:51.930Z",
+  "status": "implemented_with_remaining_acceptance",
+  "delivery": {
+    "implemented": "ContactSolutions-derived native caption/palette, startup fixture isolation and browser focus correction; existing redesigned Rust/Tauri architecture retained",
+    "tested": "2 focused Rust chrome tests, 2 chrome UI tests, 4 palette tests, 8 browser tests after regression fix; final build/shell smoke/source checks passed. Earlier unchanged backend evidence retained.",
+    "published": false,
+    "installed": false,
+    "observedWorking": "Native caption, shell Properties and internal folder/tab transfers observed on b22dfc package; final aa24cc startup isolation observed. Final physical keyboard-focus check interrupted by owner Escape."
+  },
+  "artifact": {
+    "path": "out/FileSolutions-Setup-0.3.0-x64.exe",
+    "size": 4781569,
+    "sha256": "aa24cc0faba84b9a9faae9b364c21e280500b511dd6ae1f9c707b563a2390ff8",
+    "applicationSha256": "eab7d2a228e97eb75a93b5a29e6724e80f887c28576055cde83cada87bb7b155",
+    "signed": false,
+    "installerExecuted": false,
+    "nativeUITested": false,
+    "nativeVerificationScope": "Latest package launched with isolated profile and startup on/off verified. Final physical keyboard-focus retest stopped by owner Escape before observation. Caption/shell physical observations refer to preceding b22dfc build; chrome source unchanged.",
+    "accepted": false,
+    "predatesChromeCorrection": false,
+    "predatesExplorerVisualRevision": true
+  },
+  "checks": [
+    {
+      "command": "cargo test --workspace --locked",
+      "result": "33 passed, 1 ignored before final core-only changes; no failures",
+      "evidence": ".local/rust-final.log"
+    },
+    {
+      "command": "cargo test -p filesolutions-core --lib --locked",
+      "result": "24 passed after final core changes, including added alternate-stream refusal and mid-copy cancellation; with unchanged migration/Windows tests, current coverage is 34 passed and 1 ignored",
+      "evidence": ".local/core-final.log"
+    },
+    {
+      "command": "npm run test:ui",
+      "result": "21 passed: 15 existing application flows plus 6 browser tests. Mock IPC tests do not prove native shell or external drag/drop behavior."
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts",
+      "result": "6 passed after final browser keyboard/hidden-item changes",
+      "evidence": ".local/browser-final.log"
+    },
+    {
+      "command": "node --test scripts/release-artifact.test.mjs",
+      "result": "42 passed for concurrent workflow guard changes; independently tracked workflow work"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -SkipTests",
+      "result": "Final frontend and static-CRT release binaries built; NSIS installer produced; checksum verified. Tests skipped here because already run separately. Shell DLL verified 5 overlays, 3 context commands, icon resources, unmanaged-path suppression and COM lifetime without registry writes. Final packaging process exited 0 with stdout/stderr captured directly.",
+      "warnings": [
+        "Nonfatal LNK4104 export warnings for DllCanUnloadNow and DllGetClassObject"
+      ],
+      "evidence": ".local/build-packaged.log"
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts -g 'browser is usable'",
+      "result": "2 passed after final CSS/text polish; screenshots reviewed at 780 and 1280 pixels."
+    },
+    {
+      "command": "node scripts/check-source.mjs; node scripts/check-version.mjs; cargo fmt --all --check; git diff --check",
+      "result": "All passed; source audit checked 128 source/asset files. Git only reported normal line-ending normalization warnings."
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts -g 'system theme'",
+      "result": "1 added regression passed. With the earlier 21 tests, current UI coverage is 22 passing tests across scoped runs; full suite was not redundantly rerun."
+    },
+    {
+      "command": "cargo test -p filesolutions --locked window_chrome -- --nocapture",
+      "result": "2 passed; edge/corner/exclusion/maximized/layout checks at multiple DPI values"
+    },
+    {
+      "command": "npx playwright test tests/ui/chrome.spec.ts",
+      "result": "2 passed, light/dark vector geometry, interactions, native-state updates and failure fallback"
+    },
+    {
+      "command": "npx playwright test tests/ui/palette.spec.ts",
+      "result": "4 passed, 280 exact color/contrast assertions; earlier unchanged coverage retained"
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts -g \"keyboard commands retain\"",
+      "result": "Failed before fix: Address inactive after New tab then Ctrl+L"
+    },
+    {
+      "command": "npx playwright test tests/ui/browser.spec.ts",
+      "result": "8 passed after focus fix; tabs, keyboard, shell IPC, drag intent, theme and responsive views"
+    },
+    {
+      "command": "node scripts/check-source.mjs; node scripts/check-version.mjs; git diff --check",
+      "result": "140 source/asset files audited; version0.3.0 consistent; diff check passed with line-ending warnings only"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -SkipTests",
+      "result": "Exit0; frontend, release binaries, NSIS and shell smoke passed. Nonfatal LNK4104 DLL export warnings remain."
+    }
+  ],
+  "fixtureProofs": [
+    "Rust tests cover inclusion/exclusion, destination switching and assignment, retained versions and restore, wrong hashes, missing/substituted destination, overlap rejection, collision and cancellation source preservation, writer locks, alternate-stream refusal and SQLite restart.",
+    "Packaged app used an isolated FILESOLUTIONS_PROFILE and isolated WebView2 cache. Native UI included source and excluded a file via calculated review/apply. Native IPC configured two named destinations and explicit assignment; native file picker was not exercised.",
+    "Native backup reported two backed up, one excluded, zero issues. Enumerated every destination file: four files, all under files/ or versions/, no tracking artifacts or excluded content.",
+    "Native quit/relaunch preserved two sources, destinations, assignment, exclusion, backed-up counts and two browser tabs.",
+    "Native runtime used a visible window at 120 DPI. Maximize/restore changed viewport; screenshots visually reviewed. Win32 caption style bits alone are not evidence of rendered decoration behavior."
+  ],
+  "nativeEvidence": [
+    ".local/native-fixture/final-checks.json",
+    ".local/native-fixture/window-evidence.json",
+    ".local/native-fixture/native-final.png",
+    ".local/native-fixture/native-final-maximized.png",
+    ".local/native-fixture/native-final-destinations.png"
+  ],
+  "failuresAddressed": [
+    "Native navigation could briefly expose stale rows. Loading now clears selection and blocks file operations until folder navigation completes; browser tests and final native executable checked.",
+    "Fixture test locator assumed tab labels were unique; capture corrected when both independent tabs navigated to the same folder.",
+    "Native computer-control helper was unavailable (missing pipe), so native WebView2/CDP checks cannot establish physical pointer or OS popup behavior.",
+    "First diagnostic launch isolated engine state but used the default new FileSolutions WebView cache. Profile setup now isolates WebView cache before app startup; later tests used explicit fixture cache. No old OmniSync data was changed or deleted.",
+    "Initial PowerShell redirection falsely reported NativeCommandError after a successful build; final build captured both streams directly and returned exit 0.",
+    "Final visual review found inherited .file-name flex styling stacking filenames under glyphs. Scoped inline override restored compact details rows; two affected viewport checks passed. Removed stray question-mark destination separator.",
+    "Files render guard prevented system-theme changes. Theme now updates ahead of the guard; new regression test and final native WebView media-change checks preserve tabs/selection.",
+    "product: Asynchronous captionPointer IPC failed actual title drag while ContactSolutions passed same gesture. Removed bridge; use native WebView2 app-region drag/no-drag already enabled by pinned Wry. Packaged physical drag/double-click passed.",
+    "product: Tauri undecorated shadow mode handled top border only; actual right/bottom resize failed. Disable shadow to reuse existing Tauri full-border child resize handler. Debug and packaged edge/corner checks passed.",
+    "product: Creating tab/rebuilding browser removed focused button/input. Ctrl+L then did nothing. Reproduced native and failing Playwright toBeFocused assertion. Retain keyboard focus on stable browser host across render. Eight browser tests passed, including new Ctrl+L/select-all/Copy regression. Final physical retest interrupted.",
+    "product: Fixture apply path could update owner startup registration even with FILESOLUTIONS_PROFILE. Apply now uses same profile guard as startup. Latest isolated false→true→false cycle left owner Run entry absent.",
+    "fixture: Launcher assumed startup value existed; CDP initially attached before Tauri page ready. Read optional property safely and poll page readiness. No startup registration write occurred.",
+    "tool_or_environment: Historic missing pipe; current UIA Restore targeting did not change state once; external drag endpoint outside source bounds rejected. Bounded supported reset after reboot restored current enumeration, not proof of historic repair. Fresh screenshot coordinate Restore worked. External drag remains unverified.",
+    "owner_stop: Computer Use stopped by physical Escape during first state capture of latest package. No further native input or helper calls issued; fixture left running; final native focus and updated report review checkpointed."
+  ],
+  "remaining": [
+    "Final aa24cc package: native keyboard-focus regression recheck pending; owner stopped Computer Use with physical Escape. Latest fixture PID 32996 left running in isolated profile, not closed after stop.",
+    "External incoming/outgoing drag/drop unverified: native helper rejected endpoint (-40,600) outside Explorer source window bounds 1415x1143. No transfer occurred; source hash preserved.",
+    "Mixed-monitor DPI, snap/drag-from-maximized placement, all eight physical resize directions, assistive technology and native caption hover/pressed acceptance remain open. Right edge/corner and normal/maximized geometry observed at 125%; synthetic hit tests cover 100–300%.",
+    "Physical cross-volume disconnection, live SMB/cloud destinations and remote directory-identity stability remain unverified.",
+    "Native destination/restore pickers and clean-VM installer/UAC/shell registration remain unverified. No owner-machine installation, registration or Explorer restart authorized.",
+    "Updated Workspace native gallery and artifact reports rebuilt, but post-change rendered review remains pending after owner stopped Computer Use.",
+    "Explorer omissions: virtual namespaces/libraries, ZIP, recursive indexed search, thumbnails/preview, transfer undo, collision merge/replace, outgoing Move and full filesystem metadata cloning",
+    "All registered destinations must currently be online for settings reviews. Local database export/rebuild is not automated. DB-loss and manual consistent-backup implications are documented."
+  ],
+  "repository": {
+    "url": "https://github.com/william-pyle/FileSolutions",
+    "id": 1447702128,
+    "rename": "Previously completed in place; not repeated during resume",
+    "historyPreserved": "Public visibility, v0.2.0 tag and release 438042435 preserved",
+    "redesignPushed": false
+  },
+  "artifactHistory": [
+    {
+      "label": "Before ContactSolutions palette; nativeEvidence entries are limited historical WebView/CDP observations for this artifact",
+      "path": "out/FileSolutions-Setup-0.3.0-x64.exe",
+      "size": 4765792,
+      "sha256": "1e4b0d3e89ad8e23ffce377f3e2b11dc9e2c8eebf5925fcedb483cb69291181f",
+      "applicationSha256": "d9ffcceea0b129278be53642ca7929f8bbaf0f6bac4965ed5f55395e5a6eff6c",
+      "signed": false,
+      "installerExecuted": false
+    },
+    {
+      "path": "out/FileSolutions-Setup-0.3.0-x64.exe",
+      "size": 4768832,
+      "sha256": "a98a98b55154653bbae9c3455135e4eec416df92dda72e7fa6ccb927531b1aa9",
+      "applicationSha256": "f4eca6e8daa15138c54b31289a7576dcd0fd7f97890646dc44cd143dffbd6fcd",
+      "signed": false,
+      "installerExecuted": false,
+      "nativeUITested": false,
+      "accepted": false,
+      "predatesChromeCorrection": true,
+      "label": "Pre-correction palette package; owner rejected caption appearance"
+    },
+    {
+      "sha256": "0c141002b6224c254f24457cc54d4cecf188d4b1777ebc2275af549658c6ddcf",
+      "size": 4782584,
+      "status": "superseded_full_border_resize_defect"
+    },
+    {
+      "sha256": "b22dfc686a55b68e27c41b5b232a547616ec4c298cc6b6749a104466e72f80cd",
+      "size": 4779305,
+      "applicationSha256": "c5687b530a0e5b1248f0fb8e904aa8bd0dc1fb6a93d4dde633b509d4e406e9b1",
+      "status": "native_chrome_and_shell_observed_before_keyboard_focus_fix"
+    }
+  ],
+  "paletteVerification": "docs/palette-verification.json",
+  "nativeUI": {
+    "passed": false,
+    "status": "partial",
+    "reason": "Native caption, shell Properties and internal folder/tab transfers observed on b22dfc package; final aa24cc startup isolation observed. Final physical keyboard-focus check interrupted by owner Escape.",
+    "evidence": "docs/chrome-verification.json"
+  },
+  "nativeEvidenceAppliesToArtifact": "1e4b0d3e89ad8e23ffce377f3e2b11dc9e2c8eebf5925fcedb483cb69291181f",
+  "chromeVerification": "docs/chrome-verification.json",
+  "currentSourceStatus": {
+    "at": "2026-11-19T06:38:51.419Z",
+    "status": "explorer_isolated_verified_with_remaining_gaps",
+    "priorEvidenceScope": "Older reports/artifacts below remain historical; current Explorer evidence is explorer-verification.json.",
+    "compiled": true,
+    "acceptanceTested": "partial isolated automated/native",
+    "nativeObserved": true,
+    "ownerVisualAccepted": true,
+    "fullAcceptance": false,
+    "installerRebuilt": false,
+    "published": false,
+    "installed": false,
+    "applicationSha256": "d5f3cebe38033ce6415626cebdece59aec5d13c1e5a510791936c3cbdf78640b",
+    "verification": "explorer-verification.json"
+  }
+}
