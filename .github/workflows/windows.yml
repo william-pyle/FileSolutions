@@ -8,69 +8,116 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: windows-${{ github.ref }}
-  cancel-in-progress: false
+  group: windows-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
 jobs:
   build:
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
     runs-on: windows-2025
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: npm
+      - name: Check release promotion guards
+        run: node --test scripts/release-artifact.test.mjs
+      - name: Audit source package
+        run: npm run audit:source
       - name: Install Rust toolchain
         shell: pwsh
         run: |
           rustup toolchain install 1.98.1 --profile minimal --component rustfmt,clippy
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           rustup default 1.98.1
-      - name: Verify release version
-        run: node scripts/check-version.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $flags = @('-C','target-feature=+crt-static',"--remap-path-prefix=$env:GITHUB_WORKSPACE=.","--remap-path-prefix=$env:USERPROFILE\.cargo=/.cargo") -join [char]31
+          "CARGO_ENCODED_RUSTFLAGS=$flags" >> $env:GITHUB_ENV
+      - name: Cache Rust dependencies
+        id: rust-cache
+        uses: Swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
+        with:
+          key: windows-2025-x64-static-crt-${{ hashFiles('scripts/build.ps1', 'package-lock.json') }}
+          cache-workspace-crates: 'false'
+          cache-on-failure: 'false'
+          save-if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       - name: Install NSIS
         run: choco install nsis --no-progress -y
       - name: Build and test Windows installer
         shell: pwsh
         run: ./scripts/build.ps1
-      - name: Audit source package
-        run: npm run audit:source
       - name: Interface tests in Edge
         run: npm run test:ui
-      - name: Upload installer and checksum
+      - name: Record artifact provenance after all gates
+        run: node scripts/release-artifact.mjs stamp
+      - name: Upload installer, checksum and provenance
         uses: actions/upload-artifact@v4
         with:
-          name: OmniSync-Windows-x64
+          name: windows-x64-${{ github.sha }}-${{ github.run_attempt }}
           path: |
-            out/OmniSync-Setup-*-x64.exe
-            out/OmniSync-Setup-*-x64.exe.sha256
+            out/*-Setup-*-x64.exe
+            out/*-Setup-*-x64.exe.sha256
+            out/provenance.json
           if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+      - name: Record cache result
+        shell: pwsh
+        env:
+          RUST_CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
+        run: '"Rust dependency cache exact hit: $env:RUST_CACHE_HIT" >> $env:GITHUB_STEP_SUMMARY'
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: build
     runs-on: windows-2025
+    timeout-minutes: 10
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
         with:
-          name: OmniSync-Windows-x64
-          path: release
-      - name: Publish tested installer
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify release version
+        run: node scripts/check-version.mjs
+      - name: Resolve successful main CI for the exact tag commit
+        id: producer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release-artifact.mjs resolve
+      - name: Download immutable artifact and verify archive digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          node scripts/release-artifact.mjs download
+          if ($LASTEXITCODE -ne 0) { throw 'Artifact download or digest verification failed' }
+          Expand-Archive -LiteralPath trusted-artifact.zip -DestinationPath release
+      - name: Verify producer and final bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release-artifact.mjs verify
+      - name: Publish verified installer
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
-          if ($env:RELEASE_TAG -cne "v$version") { throw 'Release tag/version mismatch' }
-          $exe = "release/OmniSync-Setup-$version-x64.exe"
-          $expected = (Get-Content "$exe.sha256" -Raw).Split(' ')[0]
-          if ((Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant() -cne $expected) { throw 'Artifact checksum mismatch' }
-          # Never replace a previously published installer when rerunning a workflow.
-          gh release view $env:RELEASE_TAG --json isDraft | Out-Null
-          if ($LASTEXITCODE -eq 0) { throw 'This release already exists; publish a new version instead' }
-          $notes = "docs/releases/$version.txt"
-          gh release create $env:RELEASE_TAG $exe "$exe.sha256" --verify-tag --title "OmniSync $version" --notes-file $notes --latest
+          $manifest = Get-Content release/provenance.json -Raw | ConvertFrom-Json
+          $version = $manifest.version
+          $exe = "release/$($manifest.installer)"
+          # Only a confirmed 404 authorizes creation; never replace published assets.
+          node scripts/release-artifact.mjs preflight
+          if ($LASTEXITCODE -ne 0) { throw 'Release preflight failed' }
+          gh release create $env:RELEASE_TAG $exe "$exe.sha256" release/provenance.json --verify-tag --title "FileSolutions $version" --notes-file "docs/releases/$version.txt" --latest
           if ($LASTEXITCODE -ne 0) { throw 'Release publication failed' }
+          gh release download $env:RELEASE_TAG --dir published --pattern $manifest.installer --pattern "$($manifest.installer).sha256"
+          if ($LASTEXITCODE -ne 0) { throw 'Published asset download failed' }
+          node scripts/release-artifact.mjs verify-published
+          if ($LASTEXITCODE -ne 0) { throw 'Published asset verification failed' }

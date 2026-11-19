@@ -48,19 +48,22 @@ The [HTML guide](docs/guide.html) has the full setup, destination layout, migrat
 
 Prerequisites: Windows 11 x64, Rust 1.98.1 and Visual Studio MSVC C++ build tools/Windows SDK, Node 24, WebView2 and NSIS 3.11 (set `NSIS_DIR` if necessary).
 
+For one local verification/package pass, run:
+
 ```powershell
-npm ci
-npm run build
-cargo test --workspace --locked
-npm run test:ui
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1
+npm run audit:source
+npm run test:ui
+node --test scripts/release-artifact.test.mjs
 ```
 
-The build produces `out/OmniSync-Setup-<version>-x64.exe` and `.exe.sha256`. It embeds the frontend, uses static CRT, smoke-tests the compiled Explorer DLL without registration and packages the installer. Local development: `npm run desktop`.
+The packaging script already runs npm ci, version checks, guide generation, the frontend build, Rust tests, the production native build and the shell-DLL smoke test. Do not repeat those commands immediately before it. Debug Rust tests and the production custom-protocol build use different profiles/features and remain separate required checks. Local development: `npm run desktop`.
 
-GitHub Actions compiles/tests pushes to `main` and pull requests. Push a matching version tag (`v0.2.0`, for example) to build and publish a Release after Rust tests, frontend build, source audit and Edge interface tests pass. Published assets come from the GitHub runner. Updating a release requires a new version; workflow reruns do not overwrite published installers.
+Finish source, versions, release notes and workflow edits before the final main CI run. CI builds and tests main pushes and pull requests once per event. After the exact main commit passes every gate, an explicitly authorized matching version tag promotes its immutable Windows artifact without recompiling. A missing, expired or mismatched artifact stops publication; never substitute a PR/manual build or skip tests. Finish main CI before tagging. The producer artifact is retained for 30 days; rerun main CI for that exact commit if it has expired.
 
-Before tagging, update all version files (`Cargo.toml`, `Cargo.lock`, package manifests, `src-tauri/tauri.conf.json` and the NSIS fallback), add `docs/releases/<version>.txt`, then run `node scripts/check-version.mjs`. The release job uses the automatic repository token with `contents: write`; no personal token or Google secrets are required.
+The tag job verifies the producer repository, workflow, successful main push, run attempt, commit, version, target, toolchain/features, archive digest and final installer/checksum bytes. It never overwrites a release and downloads the published assets to verify the final bytes. Publication does not install the application. See [release workflow](docs/release-workflow.md) for cache policy, recovery and authorization boundaries.
+
+Before main CI, update all version files (`Cargo.toml`, `Cargo.lock`, package manifests, `src-tauri/tauri.conf.json` and the NSIS fallback) and add `docs/releases/<version>.txt`. Any later source/version/workflow change needs CI for the new commit. The release job uses the repository token, with contents write and actions read; no personal token is required.
 
 For publisher signing, the existing `-Signed` build switch uses `OMNISYNC_SIGNTOOL`, `OMNISYNC_CERT_THUMBPRINT` and `OMNISYNC_TIMESTAMP_URL`. Never commit signing keys. Modern Explorer sparse-package tooling remains in `scripts/build-identity.ps1` for a separately configured publisher identity.
 
